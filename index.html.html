@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counselling Management - HEMA</title>
+<style>
+  :root {
+    --sidebar-bg: #ffffff;
+    --sidebar-width: 240px;
+    --topbar-bg: #ffffff;
+    --body-bg: #f0f4f8;
+    --accent: #1ea8d8;
+    --accent-dark: #1491be;
+    --accent-light: #e6f6fb;
+    --text: #2c3e50;
+    --muted: #7f8c9a;
+    --border: #dde3ea;
+    --card-bg: #ffffff;
+    --danger: #e53935;
+    --success: #2e7d32;
+    --warning: #f57c00;
+    --input-border: #cdd5de;
+    --sidebar-active: #e6f6fb;
+    --sidebar-active-text: #1ea8d8;
+    --topbar-height: 58px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--body-bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    height: var(--topbar-height);
+    background: var(--topbar-bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 18px; gap: 14px;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .topbar-logo {
+    display: flex; align-items: center; gap: 10px;
+    width: var(--sidebar-width); flex-shrink: 0;
+  }
+  .logo-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #e53935, #ff7043);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 900; color: white; flex-shrink: 0;
+    border: 2px solid #f0f0f0;
+  }
+  .logo-text { font-size: 0.72rem; font-weight: 700; color: var(--accent); line-height: 1.3; }
+  .topbar-search {
+    flex: 1; max-width: 560px;
+    display: flex; align-items: center;
+    border: 1.5px solid var(--border);
+    border-radius: 8px; background: #f7f9fb;
+    padding: 0 14px; gap: 10px; height: 38px;
+  }
+  .topbar-search input {
+    border: none; background: none; outline: none;
+    font-size: 0.85rem; color: var(--text); width: 100%;
+  }
+  .topbar-search .srch-icon { color: var(--muted); font-size: 0.95rem; flex-shrink: 0; }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+  .topbar-right .session-tag {
+    font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 5px;
+  }
+  .session-tag strong { color: var(--text); }
+  .avatar-circle {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #1ea8d8, #0d7fa8);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 0.85rem;
+  }
+  .notif-btn {
+    position: relative; background: none; border: none; cursor: pointer;
+    font-size: 1.1rem; color: var(--muted);
+  }
+  .notif-dot {
+    position: absolute; top: 0; right: 0;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--danger); border: 1.5px solid white;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: flex;
+    margin-top: var(--topbar-height);
+    height: calc(100vh - var(--topbar-height));
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow-y: auto; flex-shrink: 0;
+    padding: 10px 0 20px;
+  }
+  .sidebar-search {
+    margin: 6px 12px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px; padding: 7px 12px;
+    font-size: 0.82rem; color: var(--muted);
+    outline: none; background: #f7f9fb;
+  }
+  .sidebar-search:focus { border-color: var(--accent); }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px; cursor: pointer;
+    font-size: 0.85rem; color: var(--text);
+    border-radius: 0; transition: all 0.15s;
+    border-left: 3px solid transparent;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--sidebar-active); color: var(--accent); }
+  .nav-item.active {
+    background: var(--sidebar-active);
+    color: var(--sidebar-active-text);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+  .nav-item .nav-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+  .nav-item .nav-label { flex: 1; }
+  .nav-item .nav-arrow { font-size: 0.68rem; color: var(--muted); }
+  .nav-section-title {
+    font-size: 0.68rem; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 14px 16px 4px;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1; overflow-y: auto; padding: 22px 24px;
+    background: var(--body-bg);
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .page-title { font-size: 1.3rem; font-weight: 700; color: var(--text); }
+  .page-title span { color: var(--accent); }
+  .page-breadcrumb { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .page-actions { display: flex; gap: 10px; }
+
+  /* ── STAT CARDS (top row) ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 14px; margin-bottom: 22px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border-radius: 10px; padding: 16px 18px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .stat-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .si-blue { background: #e3f3fb; }
+  .si-green { background: #e8f5e9; }
+  .si-orange { background: #fff3e0; }
+  .si-purple { background: #f3e5f5; }
+  .stat-info .stat-val { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+  .stat-info .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── TABS ── */
+  .tabs-bar {
+    display: flex; gap: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden; border-bottom: none;
+  }
+  .tab-btn {
+    padding: 12px 22px; font-size: 0.85rem; font-weight: 500;
+    color: var(--muted); border: none; background: none; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all 0.18s;
+    display: flex; align-items: center; gap: 7px; white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--accent); background: var(--accent-light); }
+  .tab-btn.active {
+    color: var(--accent); border-bottom: 2px solid var(--accent);
+    background: var(--accent-light); font-weight: 600;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 0 10px 10px 10px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .card-header {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 14px; margin-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--accent-light); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+  .card-sub { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
+  .card-actions { margin-left: auto; }
+
+  /* ── SEARCH BAR ── */
+  .student-search-row {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .ss-wrap { position: relative; flex: 1; min-width: 260px; }
+  .ss-wrap input {
+    width: 100%; padding: 9px 14px 9px 38px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 8px; font-size: 0.88rem;
+    outline: none; transition: border 0.2s;
+    background: #f7f9fb;
+  }
+  .ss-wrap input:focus { border-color: var(--accent); background: white; }
+  .ss-wrap .ss-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; pointer-events: none; }
+  .dropdown {
+    position: absolute; top: calc(100% + 2px); left: 0; right: 0;
+    background: white; border: 1.5px solid var(--border);
+    border-radius: 0 0 10px 10px; z-index: 300;
+    max-height: 240px; overflow-y: auto;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1); display: none;
+  }
+  .drop-item {
+    padding: 9px 14px; cursor: pointer;
+    border-bottom: 1px solid #f5f7fa;
+    display: flex; align-items: center; gap: 10px;
+    transition: background 0.12s;
+  }
+  .drop-item:hover { background: var(--accent-light); }
+  .drop-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #0d7fa8);
+    color: white; font-size: 0.8rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .drop-name { font-weight: 600; font-size: 0.85rem; }
+  .drop-detail { font-size: 0.73rem; color: var(--muted); }
+  .no-result { padding: 14px; text-align: center; color: var(--muted); font-size: 0.82rem; }
+
+  /* ── STUDENT BANNER ── */
+  .student-banner {
+    background: linear-gradient(135deg, #1ea8d8 0%, #0d7fa8 100%);
+    border-radius: 10px; padding: 16px 20px;
+    color: white; display: none; margin-bottom: 18px;
+    border: 1px solid #1491be;
+    box-shadow: 0 2px 10px rgba(30,168,216,0.25);
+  }
+  .student-banner.show { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .sb-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    font-size: 1.3rem; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
+  }
+  .sb-info { flex: 1; }
+  .sb-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+  .sb-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sb-tag {
+    background: rgba(255,255,255,0.18);
+    border-radius: 5px; padding: 2px 10px;
+    font-size: 0.75rem; display: flex; align-items: center; gap: 4px;
+  }
+  .sb-tag span { opacity: 0.75; }
+  .sb-badge {
+    background: white; color: var(--accent);
+    font-size: 0.75rem; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px; align-self: flex-start;
+  }
+
+  /* ── FORM ── */
+  .section-divider {
+    font-size: 0.72rem; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 6px 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 14px 16px; margin-bottom: 18px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.span2 { grid-column: span 2; }
+  label {
+    font-size: 0.74rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  label .req { color: var(--danger); }
+  input[type=text], input[type=date], input[type=email],
+  input[type=tel], input[type=number], select, textarea {
+    padding: 8px 12px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 7px; font-size: 0.86rem;
+    color: var(--text); background: #f7f9fb;
+    outline: none; transition: border 0.2s, box-shadow 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(30,168,216,0.12);
+    background: white;
+  }
+  input[readonly] { background: #eef2f6; color: #5a6a7a; cursor: default; }
+  textarea { resize: vertical; min-height: 80px; }
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237f8c9a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 30px;
+  }
+
+  /* Action blocks */
+  .action-block {
+    background: #f7f9fb; border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;
+  }
+  .action-block-label {
+    font-size: 0.75rem; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 7px;
+  }
+  .action-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    padding: 9px 20px; border-radius: 7px; font-size: 0.85rem;
+    font-weight: 600; cursor: pointer; border: none; transition: all 0.18s;
+    display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-outline { background: white; color: var(--muted); border: 1.5px solid var(--border); }
+  .btn-outline:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+  .btn-danger { background: #fce4ec; color: var(--danger); border: 1px solid #f8bbd0; }
+  .btn-icon { background: var(--accent-light); color: var(--accent); border: 1px solid #b3dff0; }
+  .form-footer {
+    display: flex; justify-content: flex-end; gap: 10px;
+    padding-top: 16px; border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  /* ── RECORDS TABLE ── */
+  .table-wrap { overflow-x: auto; border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  thead tr { background: #f0f4f8; }
+  th { padding: 10px 14px; text-align: left; font-weight: 600; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid #f3f5f8; color: var(--text); }
+  tr:hover td { background: var(--accent-light); }
+  .status-pill { padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+  .s-open { background: #fff3e0; color: #e65100; }
+  .s-progress { background: #e3f2fd; color: #0277bd; }
+  .s-closed { background: #e8f5e9; color: #2e7d32; }
+  .s-referred { background: #f3e5f5; color: #7b1fa2; }
+  .tbl-btn { padding: 3px 10px; border-radius: 5px; font-size: 0.72rem; font-weight: 600; cursor: pointer; border: none; margin-right: 4px; }
+  .tb-view { background: #e3f2fd; color: #0277bd; }
+  .tb-del  { background: #fce4ec; color: #c62828; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #2e7d32; color: white;
+    padding: 12px 20px; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    transform: translateY(60px); opacity: 0;
+    transition: all 0.3s; z-index: 9999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── PRINT ── */
+  @media print {
+    .sidebar, .topbar, .no-print { display: none !important; }
+    .main { padding: 0; }
+    .layout { margin-top: 0; height: auto; }
+    .card { box-shadow: none; border: 1px solid #ccc; border-radius: 4px; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f0f4f8; }
+  ::-webkit-scrollbar-thumb { background: #c0ccd8; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #a0b0c0; }
+
+  @media (max-width: 768px) {
+    :root { --sidebar-width: 0px; }
+    .sidebar { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.span2 { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══ -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="logo-circle">H</div>
+    <div class="logo-text">HEMA HIGHER SECONDARY<br>SCHOOL</div>
+  </div>
+  <div class="topbar-search">
+    <span class="srch-icon">🔍</span>
+    <input type="text" placeholder="Search student by name, father name, admission no or mobile no..." />
+  </div>
+  <div class="topbar-right">
+    <div class="session-tag">Session: <strong>2025 – 2026</strong> ▾</div>
+    <button class="notif-btn">🔔<span class="notif-dot"></span></button>
+    <div class="avatar-circle">A</div>
+  </div>
+</div>
+
+<!-- ══ LAYOUT ══ -->
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <div class="sidebar">
+    <input class="sidebar-search" type="text" placeholder="Search menu..." />
+    <div class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></div>
+    <div class="nav-item"><span class="nav-icon">📢</span><span class="nav-label">Leads / Inquiry</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">🎓</span><span class="nav-label">Students</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">🏷️</span><span class="nav-label">Tags</span></div>
+    <div class="nav-item"><span class="nav-icon">👩‍🏫</span><span class="nav-label">Teachers</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">👔</span><span class="nav-label">Employees</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">👨‍👩‍👧</span><span class="nav-label">Parents / Siblings</span></div>
+    <div class="nav-item"><span class="nav-icon">💰</span><span class="nav-label">Fees</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">📱</span><span class="nav-label">Mobile App Users</span></div>
+    <div class="nav-item"><span class="nav-icon">📅</span><span class="nav-label">Attendance</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item active"><span class="nav-icon">🧠</span><span class="nav-label">Counselling</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item" style="padding-left:36px;font-size:0.82rem;"><span class="nav-icon">📋</span><span class="nav-label">New Session</span></div>
+    <div class="nav-item" style="padding-left:36px;font-size:0.82rem;"><span class="nav-icon">🗂️</span><span class="nav-label">Records</span></div>
+    <div class="nav-item"><span class="nav-icon">🏖️</span><span class="nav-label">Leave</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">💼</span><span class="nav-label">HR & Payroll</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">🏦</span><span class="nav-label">Bank Accounts</span></div>
+    <div class="nav-item"><span class="nav-icon">📈</span><span class="nav-label">Income</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">📉</span><span class="nav-label">Expenses</span><span class="nav-arrow">▾</span></div>
+    <div class="nav-item"><span class="nav-icon">📒</span><span class="nav-label">Ledger & Day Book</span><span class="nav-arrow">▾</span></div>
+  </div>
+
+  <!-- ── MAIN CONTENT ── -->
+  <div class="main">
+
+    <!-- Page Header -->
+    <div class="page-header no-print">
+      <div>
+        <div class="page-title">Welcome, <span>Counselling Management</span></div>
+        <div class="page-breadcrumb">Dashboard &rsaquo; Counselling &rsaquo; New Session</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-outline" onclick="window.print()">🖨️ Print / PDF</button>
+        <button class="btn btn-primary" onclick="saveRecord()">💾 Save Record</button>
+      </div>
+    </div>
+
+    <!-- Stat row -->
+    <div class="stat-row no-print">
+      <div class="stat-card">
+        <div class="stat-icon si-blue">🧠</div>
+        <div class="stat-info">
+          <div class="stat-val" id="st-total">0</div>
+          <div class="stat-lbl">Total Sessions</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-orange">🕐</div>
+        <div class="stat-info">
+          <div class="stat-val" id="st-open">0</div>
+          <div class="stat-lbl">Open Cases</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-blue">🔄</div>
+        <div class="stat-info">
+          <div class="stat-val" id="st-prog">0</div>
+          <div class="stat-lbl">In Progress</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-green">✅</div>
+        <div class="stat-info">
+          <div class="stat-val" id="st-closed">0</div>
+          <div class="stat-lbl">Closed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-bar no-print">
+      <button class="tab-btn active" onclick="switchTab('new-session', this)">📋 New Session</button>
+      <button class="tab-btn" onclick="switchTab('records', this)">🗂️ All Records</button>
+    </div>
+
+    <!-- ════ TAB: NEW SESSION ════ -->
+    <div id="tab-new-session" class="tab-panel">
+
+      <!-- Student Search -->
+      <div class="card" style="border-radius:0 10px 10px 10px;">
+        <div class="card-header">
+          <div class="card-icon">🔍</div>
+          <div><div class="card-title">Search Student</div><div class="card-sub">Type name, admission no. or mobile to auto-fill details</div></div>
+        </div>
+        <div class="student-search-row">
+          <div class="ss-wrap" id="ssWrap">
+            <span class="ss-icon">🔍</span>
+            <input type="text" id="studentSearch" placeholder="Search by student name, Admission No. or Mobile No..." oninput="searchStudents(this.value)" autocomplete="off" />
+            <div class="dropdown" id="searchDropdown"></div>
+          </div>
+          <button class="btn btn-outline" onclick="clearSearch()">✖ Clear</button>
+        </div>
+
+        <!-- Student Banner -->
+        <div class="student-banner" id="studentBanner">
+          <div class="sb-avatar" id="sbAv">?</div>
+          <div class="sb-info">
+            <div class="sb-name" id="sbName">—</div>
+            <div class="sb-tags">
+              <div class="sb-tag"><span>Adm:</span> <strong id="sbAdm">—</strong></div>
+              <div class="sb-tag"><span>Class:</span> <strong id="sbCls">—</strong></div>
+              <div class="sb-tag"><span>Section:</span> <strong id="sbSec">—</strong></div>
+              <div class="sb-tag"><span>Mobile:</span> <strong id="sbMob">—</strong></div>
+              <div class="sb-tag"><span>Father:</span> <strong id="sbFa">—</strong></div>
+              <div class="sb-tag"><span>Mother:</span> <strong id="sbMo">—</strong></div>
+            </div>
+          </div>
+          <div class="sb-badge" id="sbGender">—</div>
+        </div>
+      </div>
+
+      <!-- CHILD ASSESSMENT -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🧒</div>
+          <div>
+            <div class="card-title">Child Assessment</div>
+            <div class="card-sub">Psycho-social assessment of the student</div>
+          </div>
+        </div>
+
+        <div class="section-divider">📌 Student Information (Auto-filled on selection)</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Student Name <span class="req">*</span></label><input type="text" id="ca_name" readonly placeholder="Select student above" /></div>
+          <div class="form-group"><label>Mobile No. <span class="req">*</span></label><input type="tel" id="ca_mobile" readonly placeholder="—" /></div>
+          <div class="form-group"><label>WhatsApp No.</label><input type="tel" id="ca_wp" placeholder="—" /></div>
+          <div class="form-group"><label>Alternate No.</label><input type="tel" id="ca_alt" placeholder="—" /></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="ca_email" placeholder="—" /></div>
+          <div class="form-group"><label>Class <span class="req">*</span></label><input type="text" id="ca_class" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Section</label><input type="text" id="ca_sec" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Stream</label><input type="text" id="ca_stream" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Gender <span class="req">*</span></label><input type="text" id="ca_gender" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Date of Birth</label><input type="text" id="ca_dob" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Mother's Name <span class="req">*</span></label><input type="text" id="ca_mother" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Father's Name <span class="req">*</span></label><input type="text" id="ca_father" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Mother Mobile <span class="req">*</span></label><input type="tel" id="ca_momob" placeholder="—" /></div>
+          <div class="form-group"><label>Father Mobile</label><input type="tel" id="ca_famob" placeholder="—" /></div>
+          <div class="form-group"><label>Address <span class="req">*</span></label><input type="text" id="ca_addr" readonly placeholder="—" /></div>
+          <div class="form-group"><label>Is RTE Student? <span class="req">*</span></label><select id="ca_rte"><option value="">— Select —</option><option>Yes</option><option>No</option></select></div>
+          <div class="form-group"><label>Child With Special Needs</label><select id="ca_special"><option value="">— Select —</option><option>Yes</option><option>No</option></select></div>
+          <div class="form-group"><label>Medium <span class="req">*</span></label><select id="ca_medium"><option value="">— Select —</option><option>English</option><option>Hindi</option></select></div>
+          <div class="form-group"><label>Previously Attended School</label><input type="text" id="ca_pschool" placeholder="School name (if any)" /></div>
+          <div class="form-group"><label>Previously Attended Class</label><input type="text" id="ca_pclass" placeholder="Class (if any)" /></div>
+        </div>
+
+        <div class="section-divider">🩺 Assessment Details</div>
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <div class="form-group"><label>Reason for Referral <span class="req">*</span></label><textarea id="ca_reason" placeholder="Describe why the child was referred for counselling..."></textarea></div>
+          <div class="form-group"><label>Clinical History</label><textarea id="ca_clinical" placeholder="Relevant medical / clinical history..."></textarea></div>
+          <div class="form-group"><label>Family History</label><textarea id="ca_family" placeholder="Family background, relationships, significant events..."></textarea></div>
+          <div class="form-group"><label>Presenting Complaints</label><textarea id="ca_complaints" placeholder="Behaviour, emotional, or academic issues reported..."></textarea></div>
+          <div class="form-group"><label>MSE – Mental Status Examination</label><textarea id="ca_mse" placeholder="Appearance, behaviour, mood, affect, speech, thought, cognition, insight..."></textarea></div>
+          <div class="form-group"><label>Psychological Test</label><textarea id="ca_psych" placeholder="Tests administered and findings / scores..."></textarea></div>
+          <div class="form-group"><label>Behavioural Observation</label><textarea id="ca_behav" placeholder="Observations made during assessment session..."></textarea></div>
+          <div class="form-group"><label>Subject / Topic</label><input type="text" id="ca_subject" placeholder="E.g. Career Guidance, Emotional Support, Academic..." /></div>
+          <div class="form-group"><label>Counsellor's Remarks / Message</label><textarea id="ca_message" placeholder="Additional notes or initial observations..."></textarea></div>
+        </div>
+      </div>
+
+      <!-- ACTION TAKEN -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">⚡</div>
+          <div>
+            <div class="card-title">Action Taken</div>
+            <div class="card-sub">Record counselling actions and follow-ups</div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group"><label>Session Date <span class="req">*</span></label><input type="date" id="at_date" /></div>
+          <div class="form-group"><label>Session No.</label><input type="number" id="at_sessno" placeholder="e.g. 1" min="1" /></div>
+          <div class="form-group"><label>Counsellor Name <span class="req">*</span></label><input type="text" id="at_counsellor" placeholder="Full name of counsellor" /></div>
+          <div class="form-group"><label>Duration (minutes)</label><input type="number" id="at_duration" placeholder="e.g. 45" min="5" /></div>
+          <div class="form-group"><label>Status <span class="req">*</span></label>
+            <select id="at_status">
+              <option value="">— Select —</option>
+              <option>Open</option><option>In Progress</option>
+              <option>Closed</option><option>Referred</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Follow-up Date</label><input type="date" id="at_followup" /></div>
+        </div>
+
+        <div class="action-block">
+          <div class="action-block-label"><span class="action-dot"></span>Child Counselling</div>
+          <textarea id="at_child" placeholder="Details of direct interaction and counselling conducted with the child..."></textarea>
+        </div>
+        <div class="action-block">
+          <div class="action-block-label"><span class="action-dot"></span>Parent Counselling</div>
+          <textarea id="at_parent" placeholder="Guidance / counselling provided to parents or guardians..."></textarea>
+        </div>
+        <div class="action-block">
+          <div class="action-block-label"><span class="action-dot"></span>Teachers Counselling</div>
+          <textarea id="at_teacher" placeholder="Instructions or support provided to class teacher / staff..."></textarea>
+        </div>
+        <div class="action-block">
+          <div class="action-block-label"><span class="action-dot"></span>Recommendations</div>
+          <textarea id="at_recommend" placeholder="Recommended next steps, therapies, referrals, or interventions..."></textarea>
+        </div>
+
+        <div class="form-grid" style="margin-top:16px;">
+          <div class="form-group"><label>Confirm Date <span class="req">*</span></label><input type="date" id="at_sigdate" /></div>
+          <div class="form-group"><label>Counsellor Signature</label><input type="text" id="at_sig" placeholder="Name as signature" /></div>
+        </div>
+
+        <div class="form-footer no-print">
+          <button class="btn btn-outline" onclick="resetForm()">↩ Reset</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨️ Print / PDF</button>
+          <button class="btn btn-primary" onclick="saveRecord()">💾 Save Record</button>
+        </div>
+      </div>
+
+    </div><!-- end tab-new-session -->
+
+    <!-- ════ TAB: RECORDS ════ -->
+    <div id="tab-records" class="tab-panel" style="display:none;">
+      <div class="card" style="border-radius:0 10px 10px 10px;">
+        <div class="card-header">
+          <div class="card-icon">🗂️</div>
+          <div>
+            <div class="card-title">Counselling Records</div>
+            <div class="card-sub">All saved counselling sessions</div>
+          </div>
+        </div>
+        <div class="student-search-row" style="margin-bottom:14px;">
+          <div class="ss-wrap" style="position:relative;">
+            <span class="ss-icon">🔍</span>
+            <input type="text" id="recSearch" placeholder="Search records by name, admission no or counsellor..." oninput="filterRec(this.value)" style="padding-left:36px;" />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>Student Name</th><th>Adm. No.</th>
+                <th>Class</th><th>Counsellor</th><th>Date</th>
+                <th>Session</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="recBody">
+              <tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 14px;">No records yet. Save a counselling session to see it here.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ STUDENT DATA ══
+const STUDENTS = [
+  {sid:"727550",name:"A SWASTIK RAO",adm:"10715",cls:"VI",sec:"B",stream:"",gender:"",mobile:"9131553388",wp:"",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"A. NAGMANI RAO",father:"A. KRISHNA RAO",address:"H.NO. 67 B, BHAWANI HILLS, BHOPAL"},
+  {sid:"599982",name:"AADARSH YADAV",adm:"11091",cls:"II",sec:"B",stream:"",gender:"male",mobile:"9839562705",wp:"7887241294",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"ANJU YADAV",father:"KRISHNA CHANDRA YADAV",address:"B-BLOCK 306 GOVINDPURA BHOPAL"},
+  {sid:"599569",name:"AADHYA NIRAPURE",adm:"11861",cls:"KG I",sec:"B",stream:"",gender:"female",mobile:"7470383303",wp:"9074538173",alt:"",email:"",dob:"",rte:"No",special:"",mother:"CHHAYA NIRAPURE",father:"DILIP KUMAR NIRAPURE",address:"H.NO.66 SECTOR 1 SHANTI NIKETAN CHARWAL GOVINDPURA BHOPAL"},
+  {sid:"599965",name:"AADHYA SONI",adm:"10981",cls:"II",sec:"A",stream:"",gender:"female",mobile:"9131423610",wp:"9340978986",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"NEHA SONI",father:"BRIJESH SONI",address:"1373, KRISHNA NAGAR COLONY, COACH FACTORY, BHOPAL"},
+  {sid:"644867",name:"AADI AHIRWAR",adm:"12103",cls:"III",sec:"B",stream:"",gender:"male",mobile:"9753961003",wp:"",alt:"9770446215",email:"",dob:"03 Jun, 2017",rte:"No",special:"0",mother:"ARTI AHIRWAR",father:"SHIVRAJ AHIRWAR",address:"D/64 DILKHUSHA BHAG APSARA BHOPAL"},
+  {sid:"603911",name:"AADI SAHU",adm:"9754",cls:"XII",sec:"B",stream:"COMMERCE WITH HINDI",gender:"male",mobile:"9826369298",wp:"",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"GAYATRI SAHU",father:"PRADEEP SAHU",address:"OAK 104, RAJAT GOLDEN NEST, KATARA HILLS, BHOPAL"},
+  {sid:"603286",name:"AADITYA BHUMARKAR",adm:"10459",cls:"V",sec:"C",stream:"",gender:"male",mobile:"9755620084",wp:"9111608240",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"PRIYANKA BHUMARKAR",father:"AJEET BHUMARKAR",address:"HIG-30 PURVANCHAL PHASE 1 BDA ROAD KHAJURI KALAN PIPLANI"},
+  {sid:"603325",name:"AAHANA BISWAS",adm:"9770",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"9425028001",wp:"8989160380",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"NAMITA BISWAS",father:"DEBASISH BISWAS",address:"H.NO. 32, GEET MOHINI BUNGALOWS, PHASE-VI, AYODHYA NAGAR, BHOPAL"},
+  {sid:"583724",name:"AAKRITI MALVIYA",adm:"9238",cls:"XI",sec:"B",stream:"COMMERCE WITH PHYSICAL EDUCATION",gender:"female",mobile:"9131359081",wp:"9131359081",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"Lt. BHAVANA MALVIYA",father:"DHIRENDRA MALVIYA",address:"HOUSE NO. 420 RACHANA NAGAR, BHOPAL (M P)"},
+  {sid:"603590",name:"AAKRITI MEHRA",adm:"9959",cls:"VIII",sec:"A",stream:"",gender:"female",mobile:"9303702143",wp:"9713961600",alt:"",email:"piyushsahu7566@gmail.com",dob:"04 Jan, 2012",rte:"No",special:"0",mother:"PIYUSH MEHRA",father:"AJAY MEHRA",address:"H.NO 324, ROOP NAGAR GOVINDPURA, BHOPAL"},
+  {sid:"603459",name:"AAHIL NASEEM KHAN",adm:"10907",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"male",mobile:"7987213698",wp:"8319527672",alt:"",email:"",dob:"",rte:"No",special:"",mother:"SAYMA BEGUM",father:"MOHAMMAD NASEEM KHAN",address:"402-A, HOUSING BOARD COLONY, AISHBAGH, BHOPAL"},
+  {sid:"706783",name:"AANAND KUMAR MISHRA",adm:"12174",cls:"XI",sec:"B",stream:"COMMERCE WITH COMPUTER SCIENCE",gender:"male",mobile:"7067546020",wp:"",alt:"9201120480",email:"",dob:"16 Sep, 2009",rte:"No",special:"0",mother:"RANJANA MISHRA",father:"DILIP KUMAR MISHRA",address:"H.NO.-54 NAVIN SWAMI VIVEKANAND NAGAR PIPLANI BHOPAL"},
+  {sid:"603500",name:"AANCHAL BATHAM",adm:"11337",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"7869248143",wp:"",alt:"6265494945",email:"",dob:"",rte:"No",special:"0",mother:"RITU BATHAM",father:"KRISHNA KUMAR BATHAM",address:"H. NO. C-39, SAMRAT COLONY, ASHOKA GARDEN, BHOPAL"},
+  {sid:"603408",name:"AARADHYA",adm:"10947",cls:"V",sec:"B",stream:"",gender:"female",mobile:"9755452042",wp:"",alt:"",email:"",dob:"",rte:"No",special:"",mother:"RENUKA",father:"VENUGOPAL",address:"503, VIKAS NAGAR, D-SECTOR, NEAR ROYAL H.S SCHOOL, BHOPAL"},
+  {sid:"603421",name:"AARADHYA MOURYA",adm:"10986",cls:"V",sec:"B",stream:"",gender:"female",mobile:"9131808890",wp:"9691782732",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"PINKY MOURYA",father:"VIJAY KUMAR MOURYA",address:"LIG-124, BHARTI NIKETAN, GOVINDPURA, BHOPAL"},
+  {sid:"603908",name:"YASHI MANZHI",adm:"9539",cls:"XII",sec:"A",stream:"PCM WITH PSYCHOLOGY",gender:"female",mobile:"8959750702",wp:"7566799302",alt:"",email:"",dob:"",rte:"No",special:"",mother:"HARCHAT",father:"SANJAY MANZHI",address:"SEC-C-12/2 SUBHASH COLONY ASHOKA GARDEN BPL"},
+  {sid:"603828",name:"YATHARTH GUPTA",adm:"11607",cls:"X",sec:"B",stream:"CLASS X WITH SANSKRIT",gender:"male",mobile:"7000562029",wp:"",alt:"9893208349",email:"",dob:"",rte:"No",special:"0",mother:"RITA GUPTA",father:"VINEET GUPTA",address:"357-A PHASE GOPAL NAGAR, BHEL BHOPAL"},
+  {sid:"603834",name:"YASHASVI PATIL",adm:"11030",cls:"X",sec:"A",stream:"CLASS X WITH HINDI",gender:"female",mobile:"8770879831",wp:"6261005588",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"VINITA PATIL",father:"CHANDRAKANT PATIL",address:"L-214, BHARTI NIKETAN, BHOPAL"},
+];
+
+let allRecords = JSON.parse(localStorage.getItem('hem_counsellingRec') || '[]');
+let selectedStudent = null;
+
+// ══ SEARCH ══
+function searchStudents(q) {
+  const dd = document.getElementById('searchDropdown');
+  if (!q || q.length < 2) { dd.style.display = 'none'; return; }
+  const t = q.toLowerCase();
+  const m = STUDENTS.filter(s =>
+    s.name.toLowerCase().includes(t) || s.adm.includes(t) || s.mobile.includes(t)
+  ).slice(0, 8);
+  dd.innerHTML = m.length
+    ? m.map(s => `<div class="drop-item" onclick="selectStudent('${s.sid}')">
+        <div class="drop-avatar">${s.name[0]}</div>
+        <div><div class="drop-name">${s.name}</div>
+        <div class="drop-detail">Adm: ${s.adm} &nbsp;|&nbsp; Class: ${s.cls} ${s.sec} &nbsp;|&nbsp; ${s.mobile}</div></div>
+      </div>`).join('')
+    : `<div class="no-result">No students found for "${q}"</div>`;
+  dd.style.display = 'block';
+}
+
+function selectStudent(sid) {
+  const s = STUDENTS.find(x => x.sid === sid);
+  if (!s) return;
+  selectedStudent = s;
+  // Banner
+  const b = document.getElementById('studentBanner');
+  b.classList.add('show');
+  document.getElementById('sbAv').textContent = s.name[0];
+  document.getElementById('sbName').textContent = s.name;
+  document.getElementById('sbAdm').textContent = s.adm;
+  document.getElementById('sbCls').textContent = s.cls;
+  document.getElementById('sbSec').textContent = s.sec;
+  document.getElementById('sbMob').textContent = s.mobile;
+  document.getElementById('sbFa').textContent = s.father;
+  document.getElementById('sbMo').textContent = s.mother;
+  document.getElementById('sbGender').textContent = s.gender ? s.gender.toUpperCase() : 'N/A';
+  // Form
+  document.getElementById('ca_name').value    = s.name;
+  document.getElementById('ca_mobile').value  = s.mobile;
+  document.getElementById('ca_wp').value      = s.wp;
+  document.getElementById('ca_alt').value     = s.alt;
+  document.getElementById('ca_email').value   = s.email;
+  document.getElementById('ca_class').value   = s.cls;
+  document.getElementById('ca_sec').value     = s.sec;
+  document.getElementById('ca_stream').value  = s.stream;
+  document.getElementById('ca_gender').value  = s.gender;
+  document.getElementById('ca_dob').value     = s.dob;
+  document.getElementById('ca_mother').value  = s.mother;
+  document.getElementById('ca_father').value  = s.father;
+  document.getElementById('ca_addr').value    = s.address;
+  document.getElementById('ca_rte').value     = s.rte;
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('at_date').value    = today;
+  document.getElementById('at_sigdate').value = today;
+  document.getElementById('studentSearch').value = s.name;
+  document.getElementById('searchDropdown').style.display = 'none';
+  showToast('✅ Student data auto-filled successfully!');
+}
+
+function clearSearch() {
+  document.getElementById('studentSearch').value = '';
+  document.getElementById('searchDropdown').style.display = 'none';
+  document.getElementById('studentBanner').classList.remove('show');
+  selectedStudent = null;
+  resetForm();
+}
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('ssWrap').contains(e.target))
+    document.getElementById('searchDropdown').style.display = 'none';
+});
+
+// ══ SAVE ══
+function saveRecord() {
+  if (!selectedStudent) { showToast('⚠️ Please search and select a student first!', true); return; }
+  const rec = {
+    id: Date.now(),
+    sid: selectedStudent.sid,
+    studentName: selectedStudent.name,
+    adm: selectedStudent.adm,
+    cls: selectedStudent.cls + ' ' + selectedStudent.sec,
+    counsellor: document.getElementById('at_counsellor').value || '—',
+    date: document.getElementById('at_date').value,
+    sessno: document.getElementById('at_sessno').value || '1',
+    status: document.getElementById('at_status').value || 'Open',
+    reason: document.getElementById('ca_reason').value,
+  };
+  allRecords.unshift(rec);
+  localStorage.setItem('hem_counsellingRec', JSON.stringify(allRecords));
+  updateStats();
+  renderRec(allRecords);
+  showToast('✅ Counselling record saved successfully!');
+}
+
+// ══ STATS ══
+function updateStats() {
+  document.getElementById('st-total').textContent  = allRecords.length;
+  document.getElementById('st-open').textContent   = allRecords.filter(r => r.status === 'Open').length;
+  document.getElementById('st-prog').textContent   = allRecords.filter(r => r.status === 'In Progress').length;
+  document.getElementById('st-closed').textContent = allRecords.filter(r => r.status === 'Closed').length;
+}
+
+// ══ RECORDS TABLE ══
+function renderRec(data) {
+  const body = document.getElementById('recBody');
+  if (!data.length) {
+    body.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">No records yet.</td></tr>';
+    return;
+  }
+  const sc = { 'Open': 's-open', 'In Progress': 's-progress', 'Closed': 's-closed', 'Referred': 's-referred' };
+  body.innerHTML = data.map((r, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${r.studentName}</strong></td>
+      <td>${r.adm}</td>
+      <td>${r.cls}</td>
+      <td>${r.counsellor}</td>
+      <td>${r.date || '—'}</td>
+      <td>Session ${r.sessno}</td>
+      <td><span class="status-pill ${sc[r.status] || 's-open'}">${r.status}</span></td>
+      <td>
+        <button class="tbl-btn tb-view">View</button>
+        <button class="tbl-btn tb-del" onclick="delRec(${r.id})">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+function filterRec(q) {
+  const t = q.toLowerCase();
+  renderRec(allRecords.filter(r =>
+    r.studentName.toLowerCase().includes(t) || r.adm.includes(t) || r.counsellor.toLowerCase().includes(t)
+  ));
+}
+function delRec(id) {
+  if (!confirm('Delete this counselling record?')) return;
+  allRecords = allRecords.filter(r => r.id !== id);
+  localStorage.setItem('hem_counsellingRec', JSON.stringify(allRecords));
+  updateStats(); renderRec(allRecords);
+  showToast('🗑️ Record deleted.');
+}
+
+// ══ TABS ══
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).style.display = 'block';
+  btn.classList.add('active');
+}
+
+// ══ RESET ══
+function resetForm() {
+  ['ca_reason','ca_clinical','ca_family','ca_complaints','ca_mse','ca_psych','ca_behav',
+   'ca_subject','ca_message','at_counsellor','at_sessno','at_duration','at_child',
+   'at_parent','at_teacher','at_recommend','at_sig','ca_pschool','ca_pclass',
+   'ca_momob','ca_famob','ca_wp','ca_alt','ca_email'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  ['ca_rte','ca_special','ca_medium','at_status'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.selectedIndex = 0;
+  });
+}
+
+// ══ TOAST ══
+function showToast(msg, warn = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = warn ? '#c62828' : '#1a7a2e';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+updateStats();
+renderRec(allRecords);
+</script>
+</body>
+</html>
