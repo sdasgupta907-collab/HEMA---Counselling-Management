@@ -3,694 +3,683 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Counselling Management - HEMA</title>
+<title>Counselling Management - HEMA Higher Secondary School</title>
 <style>
   :root {
-    --sidebar-bg: #ffffff;
-    --sidebar-width: 240px;
-    --topbar-bg: #ffffff;
-    --body-bg: #f0f4f8;
-    --accent: #1ea8d8;
-    --accent-dark: #1491be;
-    --accent-light: #e6f6fb;
-    --text: #2c3e50;
-    --muted: #7f8c9a;
-    --border: #dde3ea;
-    --card-bg: #ffffff;
-    --danger: #e53935;
-    --success: #2e7d32;
-    --warning: #f57c00;
-    --input-border: #cdd5de;
-    --sidebar-active: #e6f6fb;
-    --sidebar-active-text: #1ea8d8;
-    --topbar-height: 58px;
+    --primary:#1976d2;--primary-dark:#0d47a1;--primary-light:#e3f2fd;
+    --body-bg:#f5f6fa;--card-bg:#fff;--border:#e0e6ed;--text:#2c3e50;
+    --muted:#7f8c9a;--label:#546e7a;--input-bg:#f8fafc;
+    --success:#2e7d32;--success-bg:#e8f5e9;--warning-bg:#fff8e1;
+    --warning:#f57f17;--danger-bg:#fce4ec;--danger:#c62828;
+    --radius:6px;--shadow:0 1px 4px rgba(0,0,0,.08);
+    --shadow-md:0 2px 12px rgba(25,118,210,.1);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--body-bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--body-bg);color:var(--text);font-size:13.5px;min-height:100vh;}
 
-  /* ── TOP BAR ── */
-  .topbar {
-    height: var(--topbar-height);
-    background: var(--topbar-bg);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center;
-    padding: 0 18px; gap: 14px;
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-  }
-  .topbar-logo {
-    display: flex; align-items: center; gap: 10px;
-    width: var(--sidebar-width); flex-shrink: 0;
-  }
-  .logo-circle {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: linear-gradient(135deg, #e53935, #ff7043);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; font-weight: 900; color: white; flex-shrink: 0;
-    border: 2px solid #f0f0f0;
-  }
-  .logo-text { font-size: 0.72rem; font-weight: 700; color: var(--accent); line-height: 1.3; }
-  .topbar-search {
-    flex: 1; max-width: 560px;
-    display: flex; align-items: center;
-    border: 1.5px solid var(--border);
-    border-radius: 8px; background: #f7f9fb;
-    padding: 0 14px; gap: 10px; height: 38px;
-  }
-  .topbar-search input {
-    border: none; background: none; outline: none;
-    font-size: 0.85rem; color: var(--text); width: 100%;
-  }
-  .topbar-search .srch-icon { color: var(--muted); font-size: 0.95rem; flex-shrink: 0; }
-  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
-  .topbar-right .session-tag {
-    font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 5px;
-  }
-  .session-tag strong { color: var(--text); }
-  .avatar-circle {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: linear-gradient(135deg, #1ea8d8, #0d7fa8);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 0.85rem;
-  }
-  .notif-btn {
-    position: relative; background: none; border: none; cursor: pointer;
-    font-size: 1.1rem; color: var(--muted);
-  }
-  .notif-dot {
-    position: absolute; top: 0; right: 0;
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--danger); border: 1.5px solid white;
-  }
+  /* TOP BAR */
+  .topbar{background:#fff;border-bottom:1.5px solid var(--border);height:56px;display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+  .logo-circle{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .logo-text{font-size:12px;font-weight:700;color:var(--primary);line-height:1.3;max-width:130px;}
+  .topbar-search{flex:1;max-width:480px;position:relative;margin:0 16px;}
+  .topbar-search input{width:100%;padding:8px 14px 8px 36px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;background:var(--body-bg);outline:none;transition:border .2s;}
+  .topbar-search input:focus{border-color:var(--primary);background:#fff;}
+  .ts-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);}
+  .ts-icon svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .session-tag{font-size:12px;color:var(--muted);font-weight:600;border:1.5px solid var(--border);padding:4px 12px;border-radius:4px;}
+  .session-tag strong{color:var(--text);}
+  .topbar-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 
-  /* ── LAYOUT ── */
-  .layout {
-    display: flex;
-    margin-top: var(--topbar-height);
-    height: calc(100vh - var(--topbar-height));
-  }
+  /* PAGE TITLE */
+  .page-title-bar{background:#fff;border-bottom:1.5px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:10px;}
+  .page-title-bar h1{font-size:1.25rem;font-weight:700;color:var(--text);}
+  .page-title-bar h1 span{color:var(--primary);}
+  .breadcrumb{font-size:11.5px;color:var(--muted);margin-left:auto;}
+  .breadcrumb a{color:var(--primary);text-decoration:none;}
 
-  /* ── SIDEBAR ── */
-  .sidebar {
-    width: var(--sidebar-width);
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column;
-    overflow-y: auto; flex-shrink: 0;
-    padding: 10px 0 20px;
-  }
-  .sidebar-search {
-    margin: 6px 12px 10px;
-    border: 1.5px solid var(--border);
-    border-radius: 7px; padding: 7px 12px;
-    font-size: 0.82rem; color: var(--muted);
-    outline: none; background: #f7f9fb;
-  }
-  .sidebar-search:focus { border-color: var(--accent); }
-  .nav-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 16px; cursor: pointer;
-    font-size: 0.85rem; color: var(--text);
-    border-radius: 0; transition: all 0.15s;
-    border-left: 3px solid transparent;
-    user-select: none;
-  }
-  .nav-item:hover { background: var(--sidebar-active); color: var(--accent); }
-  .nav-item.active {
-    background: var(--sidebar-active);
-    color: var(--sidebar-active-text);
-    border-left-color: var(--accent);
-    font-weight: 600;
-  }
-  .nav-item .nav-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
-  .nav-item .nav-label { flex: 1; }
-  .nav-item .nav-arrow { font-size: 0.68rem; color: var(--muted); }
-  .nav-section-title {
-    font-size: 0.68rem; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.8px;
-    padding: 14px 16px 4px;
-  }
+  /* TABS */
+  .tabs-bar{background:#fff;border-bottom:1.5px solid var(--border);display:flex;padding:0 24px;}
+  .tab-btn{padding:13px 20px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .18s;display:flex;align-items:center;gap:7px;font-family:inherit;}
+  .tab-btn:hover{color:var(--primary);background:var(--primary-light);}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);background:var(--primary-light);}
+  .tab-icon svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;}
 
-  /* ── MAIN ── */
-  .main {
-    flex: 1; overflow-y: auto; padding: 22px 24px;
-    background: var(--body-bg);
-  }
+  /* CONTENT */
+  .main-content{padding:20px 24px 40px;max-width:1160px;margin:0 auto;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
 
-  /* ── PAGE HEADER ── */
-  .page-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
-  }
-  .page-title { font-size: 1.3rem; font-weight: 700; color: var(--text); }
-  .page-title span { color: var(--accent); }
-  .page-breadcrumb { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-  .page-actions { display: flex; gap: 10px; }
+  /* SEARCH SECTION */
+  .search-section{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .section-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+  .search-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .search-input-wrap{position:relative;flex:1;min-width:240px;}
+  .search-input-wrap input{width:100%;padding:9px 14px 9px 34px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;background:var(--input-bg);outline:none;transition:border .2s;}
+  .search-input-wrap input:focus{border-color:var(--primary);background:#fff;}
+  .s-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);}
+  .s-icon svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;}
+  .search-results-dropdown{position:absolute;top:calc(100% + 2px);left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);z-index:300;max-height:240px;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);display:none;}
+  .result-item{padding:9px 14px;cursor:pointer;border-bottom:1px solid #f0f4f8;transition:background .12s;display:flex;align-items:center;gap:10px;}
+  .result-item:hover{background:var(--primary-light);}
+  .result-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .result-info .rname{font-weight:600;font-size:13px;}
+  .result-info .rdetail{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .no-result{padding:14px;text-align:center;color:var(--muted);font-size:12.5px;}
 
-  /* ── STAT CARDS (top row) ── */
-  .stat-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 14px; margin-bottom: 22px;
-  }
-  .stat-card {
-    background: var(--card-bg);
-    border-radius: 10px; padding: 16px 18px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; gap: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  }
-  .stat-icon {
-    width: 42px; height: 42px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; flex-shrink: 0;
-  }
-  .si-blue { background: #e3f3fb; }
-  .si-green { background: #e8f5e9; }
-  .si-orange { background: #fff3e0; }
-  .si-purple { background: #f3e5f5; }
-  .stat-info .stat-val { font-size: 1.2rem; font-weight: 700; color: var(--text); }
-  .stat-info .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  /* STUDENT CARD */
+  .student-card{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;color:#fff;display:none;box-shadow:var(--shadow-md);align-items:center;flex-wrap:wrap;gap:14px;}
+  .student-card.visible{display:flex;}
+  .sc-avatar{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid rgba(255,255,255,.35);}
+  .sc-details{flex:1;min-width:200px;}
+  .sc-name{font-size:1rem;font-weight:700;margin-bottom:6px;}
+  .sc-meta{display:flex;flex-wrap:wrap;gap:6px;}
+  .sc-tag{background:rgba(255,255,255,.15);border-radius:4px;padding:3px 9px;font-size:11.5px;display:flex;align-items:center;gap:4px;}
+  .sc-tag span{opacity:.7;font-size:11px;}
+  .sc-badge{background:#fff;color:var(--primary);font-weight:700;font-size:11px;padding:4px 12px;border-radius:20px;align-self:flex-start;text-transform:uppercase;letter-spacing:.5px;}
 
-  /* ── TABS ── */
-  .tabs-bar {
-    display: flex; gap: 0;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px 10px 0 0;
-    overflow: hidden; border-bottom: none;
-  }
-  .tab-btn {
-    padding: 12px 22px; font-size: 0.85rem; font-weight: 500;
-    color: var(--muted); border: none; background: none; cursor: pointer;
-    border-bottom: 2px solid transparent; transition: all 0.18s;
-    display: flex; align-items: center; gap: 7px; white-space: nowrap;
-  }
-  .tab-btn:hover { color: var(--accent); background: var(--accent-light); }
-  .tab-btn.active {
-    color: var(--accent); border-bottom: 2px solid var(--accent);
-    background: var(--accent-light); font-weight: 600;
-  }
+  /* FORM CARD */
+  .form-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:20px 22px 24px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .card-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1.5px solid var(--border);}
+  .card-icon{width:32px;height:32px;border-radius:6px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .card-icon svg{width:16px;height:16px;fill:none;stroke:var(--primary);stroke-width:2;}
+  .card-title{font-size:14px;font-weight:700;color:var(--text);}
+  .card-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 0 10px 10px 10px;
-    padding: 22px 24px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  }
-  .card-header {
-    display: flex; align-items: center; gap: 10px;
-    padding-bottom: 14px; margin-bottom: 18px;
-    border-bottom: 1px solid var(--border);
-  }
-  .card-icon {
-    width: 34px; height: 34px; border-radius: 8px;
-    background: var(--accent-light); color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; flex-shrink: 0;
-  }
-  .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
-  .card-sub { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
-  .card-actions { margin-left: auto; }
+  /* SUB LABELS */
+  .sub-label{font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;margin-top:2px;padding:5px 10px;background:var(--primary-light);border-left:3px solid var(--primary);border-radius:0 4px 4px 0;display:inline-block;}
 
-  /* ── SEARCH BAR ── */
-  .student-search-row {
-    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-    margin-bottom: 18px;
-  }
-  .ss-wrap { position: relative; flex: 1; min-width: 260px; }
-  .ss-wrap input {
-    width: 100%; padding: 9px 14px 9px 38px;
-    border: 1.5px solid var(--input-border);
-    border-radius: 8px; font-size: 0.88rem;
-    outline: none; transition: border 0.2s;
-    background: #f7f9fb;
-  }
-  .ss-wrap input:focus { border-color: var(--accent); background: white; }
-  .ss-wrap .ss-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; pointer-events: none; }
-  .dropdown {
-    position: absolute; top: calc(100% + 2px); left: 0; right: 0;
-    background: white; border: 1.5px solid var(--border);
-    border-radius: 0 0 10px 10px; z-index: 300;
-    max-height: 240px; overflow-y: auto;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1); display: none;
-  }
-  .drop-item {
-    padding: 9px 14px; cursor: pointer;
-    border-bottom: 1px solid #f5f7fa;
-    display: flex; align-items: center; gap: 10px;
-    transition: background 0.12s;
-  }
-  .drop-item:hover { background: var(--accent-light); }
-  .drop-avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), #0d7fa8);
-    color: white; font-size: 0.8rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .drop-name { font-weight: 600; font-size: 0.85rem; }
-  .drop-detail { font-size: 0.73rem; color: var(--muted); }
-  .no-result { padding: 14px; text-align: center; color: var(--muted); font-size: 0.82rem; }
+  /* FORM GRID */
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px 18px;}
+  .form-grid.one-col{grid-template-columns:1fr;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  label{font-size:11.5px;font-weight:600;color:var(--label);}
+  label .req{color:#e53935;margin-left:2px;}
+  input[type=text],input[type=date],input[type=email],input[type=tel],input[type=number],input[type=file],select,textarea{padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text);background:var(--input-bg);outline:none;transition:border .18s,box-shadow .18s;font-family:inherit;width:100%;}
+  input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(25,118,210,.09);background:#fff;}
+  input[readonly]{background:#eef2f7;color:var(--muted);cursor:default;}
+  textarea{resize:vertical;min-height:78px;line-height:1.5;}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237f8c9a'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:28px;}
 
-  /* ── STUDENT BANNER ── */
-  .student-banner {
-    background: linear-gradient(135deg, #1ea8d8 0%, #0d7fa8 100%);
-    border-radius: 10px; padding: 16px 20px;
-    color: white; display: none; margin-bottom: 18px;
-    border: 1px solid #1491be;
-    box-shadow: 0 2px 10px rgba(30,168,216,0.25);
-  }
-  .student-banner.show { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .sb-avatar {
-    width: 52px; height: 52px; border-radius: 50%;
-    background: rgba(255,255,255,0.25);
-    font-size: 1.3rem; font-weight: 900;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
-  }
-  .sb-info { flex: 1; }
-  .sb-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
-  .sb-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .sb-tag {
-    background: rgba(255,255,255,0.18);
-    border-radius: 5px; padding: 2px 10px;
-    font-size: 0.75rem; display: flex; align-items: center; gap: 4px;
-  }
-  .sb-tag span { opacity: 0.75; }
-  .sb-badge {
-    background: white; color: var(--accent);
-    font-size: 0.75rem; font-weight: 700;
-    padding: 4px 12px; border-radius: 20px; align-self: flex-start;
-  }
+  /* SPECIAL NEEDS PANEL */
+  .special-panel{background:#f8fafc;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:12px;display:none;}
+  .special-panel.show{display:block;}
+  .special-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px 18px;margin-bottom:14px;}
 
-  /* ── FORM ── */
-  .section-divider {
-    font-size: 0.72rem; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.8px;
-    padding: 6px 0 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-divider::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 14px 16px; margin-bottom: 18px;
-  }
-  .form-group { display: flex; flex-direction: column; gap: 5px; }
-  .form-group.span2 { grid-column: span 2; }
-  label {
-    font-size: 0.74rem; font-weight: 600; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.4px;
-  }
-  label .req { color: var(--danger); }
-  input[type=text], input[type=date], input[type=email],
-  input[type=tel], input[type=number], select, textarea {
-    padding: 8px 12px;
-    border: 1.5px solid var(--input-border);
-    border-radius: 7px; font-size: 0.86rem;
-    color: var(--text); background: #f7f9fb;
-    outline: none; transition: border 0.2s, box-shadow 0.2s;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(30,168,216,0.12);
-    background: white;
-  }
-  input[readonly] { background: #eef2f6; color: #5a6a7a; cursor: default; }
-  textarea { resize: vertical; min-height: 80px; }
-  select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237f8c9a'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 12px center;
-    padding-right: 30px;
-  }
+  /* IEP BUTTON */
+  .iep-btn{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border:none;padding:8px 18px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;transition:background .18s;font-family:inherit;}
+  .iep-btn:hover{background:var(--primary-dark);}
 
-  /* Action blocks */
-  .action-block {
-    background: #f7f9fb; border: 1.5px solid var(--border);
-    border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;
-  }
-  .action-block-label {
-    font-size: 0.75rem; font-weight: 700; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.5px;
-    margin-bottom: 8px; display: flex; align-items: center; gap: 7px;
-  }
-  .action-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  /* IEP MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:#fff;border-radius:8px;width:100%;max-width:820px;box-shadow:0 8px 40px rgba(0,0,0,.2);margin:auto;}
+  .modal-header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:space-between;}
+  .modal-header h2{font-size:14px;font-weight:700;}
+  .modal-header small{font-size:11px;opacity:.8;display:block;margin-top:2px;}
+  .modal-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+  .modal-body{padding:20px;}
+  .iep-section{margin-bottom:18px;padding-bottom:16px;border-bottom:1.5px solid var(--border);}
+  .iep-section:last-child{border-bottom:none;margin-bottom:0;}
+  .iep-section-title{font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+  .iep-num{background:var(--primary);color:#fff;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .iep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px 16px;}
+  .iep-grid.full{grid-template-columns:1fr;}
+  .confidential-badge{background:var(--danger-bg);color:var(--danger);font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;}
+  .modal-footer{padding:14px 20px;border-top:1.5px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
 
-  /* ── BUTTONS ── */
-  .btn {
-    padding: 9px 20px; border-radius: 7px; font-size: 0.85rem;
-    font-weight: 600; cursor: pointer; border: none; transition: all 0.18s;
-    display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
-  }
-  .btn-primary { background: var(--accent); color: white; }
-  .btn-primary:hover { background: var(--accent-dark); }
-  .btn-outline { background: white; color: var(--muted); border: 1.5px solid var(--border); }
-  .btn-outline:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
-  .btn-danger { background: #fce4ec; color: var(--danger); border: 1px solid #f8bbd0; }
-  .btn-icon { background: var(--accent-light); color: var(--accent); border: 1px solid #b3dff0; }
-  .form-footer {
-    display: flex; justify-content: flex-end; gap: 10px;
-    padding-top: 16px; border-top: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
+  /* MONTH TABS for IEP */
+  .month-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+  .month-tab{padding:5px 12px;border:1.5px solid var(--border);border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:var(--muted);transition:all .15s;}
+  .month-tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 
-  /* ── RECORDS TABLE ── */
-  .table-wrap { overflow-x: auto; border-radius: 8px; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
-  thead tr { background: #f0f4f8; }
-  th { padding: 10px 14px; text-align: left; font-weight: 600; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; border-bottom: 1px solid var(--border); }
-  td { padding: 10px 14px; border-bottom: 1px solid #f3f5f8; color: var(--text); }
-  tr:hover td { background: var(--accent-light); }
-  .status-pill { padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
-  .s-open { background: #fff3e0; color: #e65100; }
-  .s-progress { background: #e3f2fd; color: #0277bd; }
-  .s-closed { background: #e8f5e9; color: #2e7d32; }
-  .s-referred { background: #f3e5f5; color: #7b1fa2; }
-  .tbl-btn { padding: 3px 10px; border-radius: 5px; font-size: 0.72rem; font-weight: 600; cursor: pointer; border: none; margin-right: 4px; }
-  .tb-view { background: #e3f2fd; color: #0277bd; }
-  .tb-del  { background: #fce4ec; color: #c62828; }
+  /* ACTION BLOCK */
+  .action-block{background:#f8fafc;border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;}
+  .action-block-label{font-size:11.5px;font-weight:700;color:var(--primary);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);flex-shrink:0;}
+  .divider{border:none;border-top:1.5px solid var(--border);margin:16px 0;}
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed; bottom: 24px; right: 24px;
-    background: #2e7d32; color: white;
-    padding: 12px 20px; border-radius: 8px;
-    font-size: 0.85rem; font-weight: 600;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-    transform: translateY(60px); opacity: 0;
-    transition: all 0.3s; z-index: 9999;
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
+  /* UPLOAD AREA */
+  .upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:14px;text-align:center;background:var(--input-bg);cursor:pointer;transition:border .2s;}
+  .upload-area:hover{border-color:var(--primary);background:var(--primary-light);}
+  .upload-area input{display:none;}
+  .upload-area p{font-size:12px;color:var(--muted);margin-top:4px;}
+  .upload-area .up-title{font-size:13px;font-weight:600;color:var(--primary);}
 
-  /* ── PRINT ── */
-  @media print {
-    .sidebar, .topbar, .no-print { display: none !important; }
-    .main { padding: 0; }
-    .layout { margin-top: 0; height: auto; }
-    .card { box-shadow: none; border: 1px solid #ccc; border-radius: 4px; }
-  }
+  /* GROUP SESSION UPLOAD TABLE */
+  .upload-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px;}
+  .upload-table th{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:8px 12px;text-align:left;font-size:12px;}
+  .upload-table td{padding:8px 12px;border-bottom:1px solid #f0f4f8;}
+  .upload-table tr:hover td{background:var(--primary-light);}
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #f0f4f8; }
-  ::-webkit-scrollbar-thumb { background: #c0ccd8; border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #a0b0c0; }
+  /* BUTTONS */
+  .form-footer{display:flex;justify-content:flex-end;gap:10px;padding-top:14px;border-top:1.5px solid var(--border);flex-wrap:wrap;margin-top:6px;}
+  .btn{padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+  .btn-outline{background:#fff;color:var(--muted);border:1.5px solid var(--border);}
+  .btn-outline:hover{background:var(--body-bg);}
+  .btn-secondary{background:#e3f2fd;color:var(--primary);border:1.5px solid #bbdefb;}
+  .btn-secondary:hover{background:#bbdefb;}
+  .btn-primary{background:var(--primary);color:#fff;border:1.5px solid var(--primary);box-shadow:0 2px 6px rgba(25,118,210,.2);}
+  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);}
+  .btn-sm{padding:5px 12px;font-size:12px;}
+  .btn-ghost-clear{background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:var(--radius);font-size:13px;cursor:pointer;transition:all .15s;font-family:inherit;}
+  .btn-ghost-clear:hover{border-color:#e53935;color:#e53935;background:var(--danger-bg);}
 
-  @media (max-width: 768px) {
-    :root { --sidebar-width: 0px; }
-    .sidebar { display: none; }
-    .form-grid { grid-template-columns: 1fr; }
-    .form-group.span2 { grid-column: span 1; }
-  }
+  /* RECORDS TABLE */
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);}
+  table.main-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+  table.main-tbl thead tr{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;}
+  table.main-tbl th{padding:10px 14px;text-align:left;font-weight:600;white-space:nowrap;font-size:12.5px;}
+  table.main-tbl td{padding:9px 14px;border-bottom:1px solid #f0f4f8;}
+  table.main-tbl tr:hover td{background:var(--primary-light);}
+  .badge{padding:2px 9px;border-radius:12px;font-size:11.5px;font-weight:600;display:inline-block;}
+  .badge-open{background:var(--warning-bg);color:var(--warning);}
+  .badge-progress{background:var(--primary-light);color:var(--primary);}
+  .badge-closed{background:var(--success-bg);color:var(--success);}
+  .badge-referred{background:#f3e5f5;color:#6a1b9a;}
+
+  /* PWD LIST */
+  .pwd-tag{display:inline-block;background:var(--danger-bg);color:var(--danger);padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:600;margin-right:4px;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--success);color:#fff;padding:11px 18px;border-radius:var(--radius);font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.15);transform:translateY(70px);opacity:0;transition:all .28s;z-index:9999;}
+  .toast.show{transform:translateY(0);opacity:1;}
+
+  @media print{.no-print{display:none!important;}body{background:#fff;}}.
+  @media(max-width:600px){.form-grid{grid-template-columns:1fr;}.topbar-search{display:none;}.main-content{padding:12px;}}
 </style>
 </head>
 <body>
 
-<!-- ══ TOP BAR ══ -->
-<div class="topbar">
-  <div class="topbar-logo">
+<!-- TOP BAR -->
+<div class="topbar no-print">
+  <div style="display:flex;align-items:center;gap:10px;">
     <div class="logo-circle">H</div>
-    <div class="logo-text">HEMA HIGHER SECONDARY<br>SCHOOL</div>
+    <div class="logo-text">HEMA HIGHER SECONDARY SCHOOL</div>
   </div>
   <div class="topbar-search">
-    <span class="srch-icon">🔍</span>
-    <input type="text" placeholder="Search student by name, father name, admission no or mobile no..." />
+    <span class="ts-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+    <input type="text" placeholder="Search student by name, father name, admission no or mobile no...."/>
   </div>
   <div class="topbar-right">
-    <div class="session-tag">Session: <strong>2025 – 2026</strong> ▾</div>
-    <button class="notif-btn">🔔<span class="notif-dot"></span></button>
-    <div class="avatar-circle">A</div>
+    <div class="session-tag">Session: <strong>2025 - 2026</strong></div>
+    <div class="topbar-avatar">C</div>
   </div>
 </div>
 
-<!-- ══ LAYOUT ══ -->
-<div class="layout">
+<!-- PAGE TITLE -->
+<div class="page-title-bar no-print">
+  <h1>Welcome, <span>HEMA EDUCATION SOCIETY</span></h1>
+  <div class="breadcrumb"><a href="#">Dashboard</a> / Counselling Management</div>
+</div>
 
-  <!-- ── SIDEBAR ── -->
-  <div class="sidebar">
-    <input class="sidebar-search" type="text" placeholder="Search menu..." />
-    <div class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></div>
-    <div class="nav-item"><span class="nav-icon">📢</span><span class="nav-label">Leads / Inquiry</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">🎓</span><span class="nav-label">Students</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">🏷️</span><span class="nav-label">Tags</span></div>
-    <div class="nav-item"><span class="nav-icon">👩‍🏫</span><span class="nav-label">Teachers</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">👔</span><span class="nav-label">Employees</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">👨‍👩‍👧</span><span class="nav-label">Parents / Siblings</span></div>
-    <div class="nav-item"><span class="nav-icon">💰</span><span class="nav-label">Fees</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">📱</span><span class="nav-label">Mobile App Users</span></div>
-    <div class="nav-item"><span class="nav-icon">📅</span><span class="nav-label">Attendance</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item active"><span class="nav-icon">🧠</span><span class="nav-label">Counselling</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item" style="padding-left:36px;font-size:0.82rem;"><span class="nav-icon">📋</span><span class="nav-label">New Session</span></div>
-    <div class="nav-item" style="padding-left:36px;font-size:0.82rem;"><span class="nav-icon">🗂️</span><span class="nav-label">Records</span></div>
-    <div class="nav-item"><span class="nav-icon">🏖️</span><span class="nav-label">Leave</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">💼</span><span class="nav-label">HR & Payroll</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">🏦</span><span class="nav-label">Bank Accounts</span></div>
-    <div class="nav-item"><span class="nav-icon">📈</span><span class="nav-label">Income</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">📉</span><span class="nav-label">Expenses</span><span class="nav-arrow">▾</span></div>
-    <div class="nav-item"><span class="nav-icon">📒</span><span class="nav-label">Ledger & Day Book</span><span class="nav-arrow">▾</span></div>
+<!-- TABS -->
+<div class="tabs-bar no-print">
+  <button class="tab-btn active" onclick="switchTab('new-session',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>New Session
+  </button>
+  <button class="tab-btn" onclick="switchTab('all-records',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>All Records
+  </button>
+  <button class="tab-btn" onclick="switchTab('group-sessions',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Group Sessions
+  </button>
+  <button class="tab-btn" onclick="switchTab('pwd-list',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>PWD Students
+  </button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- ══════════ TAB 1: NEW SESSION ══════════ -->
+<div id="tab-new-session" class="tab-panel active">
+
+  <!-- SEARCH -->
+  <div class="search-section no-print">
+    <div class="section-label">Search Student</div>
+    <div class="search-row">
+      <div class="search-input-wrap" id="searchWrap">
+        <span class="s-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="studentSearch" placeholder="Search by name, Admission No. or mobile..." oninput="searchStudents(this.value)" autocomplete="off"/>
+        <div class="search-results-dropdown" id="searchDropdown"></div>
+      </div>
+      <button class="btn-ghost-clear no-print" onclick="clearSearch()">Clear</button>
+    </div>
   </div>
 
-  <!-- ── MAIN CONTENT ── -->
-  <div class="main">
-
-    <!-- Page Header -->
-    <div class="page-header no-print">
-      <div>
-        <div class="page-title">Welcome, <span>Counselling Management</span></div>
-        <div class="page-breadcrumb">Dashboard &rsaquo; Counselling &rsaquo; New Session</div>
-      </div>
-      <div class="page-actions">
-        <button class="btn btn-outline" onclick="window.print()">🖨️ Print / PDF</button>
-        <button class="btn btn-primary" onclick="saveRecord()">💾 Save Record</button>
-      </div>
-    </div>
-
-    <!-- Stat row -->
-    <div class="stat-row no-print">
-      <div class="stat-card">
-        <div class="stat-icon si-blue">🧠</div>
-        <div class="stat-info">
-          <div class="stat-val" id="st-total">0</div>
-          <div class="stat-lbl">Total Sessions</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon si-orange">🕐</div>
-        <div class="stat-info">
-          <div class="stat-val" id="st-open">0</div>
-          <div class="stat-lbl">Open Cases</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon si-blue">🔄</div>
-        <div class="stat-info">
-          <div class="stat-val" id="st-prog">0</div>
-          <div class="stat-lbl">In Progress</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon si-green">✅</div>
-        <div class="stat-info">
-          <div class="stat-val" id="st-closed">0</div>
-          <div class="stat-lbl">Closed</div>
-        </div>
+  <!-- STUDENT CARD -->
+  <div class="student-card" id="studentCard">
+    <div class="sc-avatar" id="scAvatar">?</div>
+    <div class="sc-details">
+      <div class="sc-name" id="scName">—</div>
+      <div class="sc-meta">
+        <div class="sc-tag"><span>Adm:</span>&nbsp;<strong id="scAdm">—</strong></div>
+        <div class="sc-tag"><span>Class:</span>&nbsp;<strong id="scClass">—</strong></div>
+        <div class="sc-tag"><span>Sec:</span>&nbsp;<strong id="scSec">—</strong></div>
+        <div class="sc-tag"><span>Age:</span>&nbsp;<strong id="scAge">—</strong></div>
+        <div class="sc-tag"><span>Mobile:</span>&nbsp;<strong id="scMob">—</strong></div>
+        <div class="sc-tag"><span>Father:</span>&nbsp;<strong id="scFather">—</strong></div>
       </div>
     </div>
+    <div class="sc-badge" id="scGender">—</div>
+  </div>
 
-    <!-- TABS -->
-    <div class="tabs-bar no-print">
-      <button class="tab-btn active" onclick="switchTab('new-session', this)">📋 New Session</button>
-      <button class="tab-btn" onclick="switchTab('records', this)">🗂️ All Records</button>
+  <!-- CHILD ASSESSMENT -->
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div><div class="card-title">Child Assessment</div><div class="card-sub">Complete the psycho-social assessment of the child</div></div>
     </div>
 
-    <!-- ════ TAB: NEW SESSION ════ -->
-    <div id="tab-new-session" class="tab-panel">
+    <div class="sub-label">Student Information (Auto-filled)</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Student Name <span class="req">*</span></label><input type="text" id="ca_name" readonly placeholder="Select student above"/></div>
+      <div class="form-group"><label>Age <span class="req">*</span></label><input type="text" id="ca_age" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Date of Birth</label><input type="text" id="ca_dob" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Mobile No. <span class="req">*</span></label><input type="tel" id="ca_mobile" readonly placeholder="—"/></div>
+      <div class="form-group"><label>WhatsApp No.</label><input type="tel" id="ca_whatsapp" placeholder="—"/></div>
+      <div class="form-group"><label>Alternate Number</label><input type="tel" id="ca_alt" placeholder="—"/></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="ca_email" placeholder="—"/></div>
+      <div class="form-group"><label>Class <span class="req">*</span></label><input type="text" id="ca_class" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Section</label><input type="text" id="ca_section" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Stream</label><input type="text" id="ca_stream" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Gender <span class="req">*</span></label><input type="text" id="ca_gender" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Mother's Name <span class="req">*</span></label><input type="text" id="ca_mother" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Father's Name <span class="req">*</span></label><input type="text" id="ca_father" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Mother Mobile</label><input type="tel" id="ca_mother_mob" placeholder="—"/></div>
+      <div class="form-group"><label>Father Mobile</label><input type="tel" id="ca_father_mob" placeholder="—"/></div>
+      <div class="form-group"><label>Address <span class="req">*</span></label><input type="text" id="ca_address" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Medium <span class="req">*</span></label><select id="ca_medium"><option value="">— Select —</option><option>English</option><option>Hindi</option></select></div>
+      <div class="form-group"><label>Is RTE Student? <span class="req">*</span></label><select id="ca_rte"><option value="">— Select —</option><option>Yes</option><option>No</option></select></div>
+      <div class="form-group"><label>Previously Attended School</label><input type="text" id="ca_prev_school" placeholder="School name (if any)"/></div>
+      <div class="form-group"><label>Previously Attended Class</label><input type="text" id="ca_prev_class" placeholder="Class (if any)"/></div>
+    </div>
 
-      <!-- Student Search -->
-      <div class="card" style="border-radius:0 10px 10px 10px;">
-        <div class="card-header">
-          <div class="card-icon">🔍</div>
-          <div><div class="card-title">Search Student</div><div class="card-sub">Type name, admission no. or mobile to auto-fill details</div></div>
-        </div>
-        <div class="student-search-row">
-          <div class="ss-wrap" id="ssWrap">
-            <span class="ss-icon">🔍</span>
-            <input type="text" id="studentSearch" placeholder="Search by student name, Admission No. or Mobile No..." oninput="searchStudents(this.value)" autocomplete="off" />
-            <div class="dropdown" id="searchDropdown"></div>
-          </div>
-          <button class="btn btn-outline" onclick="clearSearch()">✖ Clear</button>
-        </div>
-
-        <!-- Student Banner -->
-        <div class="student-banner" id="studentBanner">
-          <div class="sb-avatar" id="sbAv">?</div>
-          <div class="sb-info">
-            <div class="sb-name" id="sbName">—</div>
-            <div class="sb-tags">
-              <div class="sb-tag"><span>Adm:</span> <strong id="sbAdm">—</strong></div>
-              <div class="sb-tag"><span>Class:</span> <strong id="sbCls">—</strong></div>
-              <div class="sb-tag"><span>Section:</span> <strong id="sbSec">—</strong></div>
-              <div class="sb-tag"><span>Mobile:</span> <strong id="sbMob">—</strong></div>
-              <div class="sb-tag"><span>Father:</span> <strong id="sbFa">—</strong></div>
-              <div class="sb-tag"><span>Mother:</span> <strong id="sbMo">—</strong></div>
-            </div>
-          </div>
-          <div class="sb-badge" id="sbGender">—</div>
-        </div>
+    <!-- SPECIAL NEEDS -->
+    <div style="margin-top:16px;">
+      <div class="form-group" style="max-width:300px;">
+        <label>Child With Special Needs <span class="req">*</span></label>
+        <select id="ca_special" onchange="toggleSpecialPanel(this.value)">
+          <option value="">— Select —</option><option>Yes</option><option>No</option>
+        </select>
       </div>
-
-      <!-- CHILD ASSESSMENT -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon">🧒</div>
-          <div>
-            <div class="card-title">Child Assessment</div>
-            <div class="card-sub">Psycho-social assessment of the student</div>
-          </div>
-        </div>
-
-        <div class="section-divider">📌 Student Information (Auto-filled on selection)</div>
-        <div class="form-grid">
-          <div class="form-group"><label>Student Name <span class="req">*</span></label><input type="text" id="ca_name" readonly placeholder="Select student above" /></div>
-          <div class="form-group"><label>Mobile No. <span class="req">*</span></label><input type="tel" id="ca_mobile" readonly placeholder="—" /></div>
-          <div class="form-group"><label>WhatsApp No.</label><input type="tel" id="ca_wp" placeholder="—" /></div>
-          <div class="form-group"><label>Alternate No.</label><input type="tel" id="ca_alt" placeholder="—" /></div>
-          <div class="form-group"><label>Email Address</label><input type="email" id="ca_email" placeholder="—" /></div>
-          <div class="form-group"><label>Class <span class="req">*</span></label><input type="text" id="ca_class" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Section</label><input type="text" id="ca_sec" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Stream</label><input type="text" id="ca_stream" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Gender <span class="req">*</span></label><input type="text" id="ca_gender" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Date of Birth</label><input type="text" id="ca_dob" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Mother's Name <span class="req">*</span></label><input type="text" id="ca_mother" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Father's Name <span class="req">*</span></label><input type="text" id="ca_father" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Mother Mobile <span class="req">*</span></label><input type="tel" id="ca_momob" placeholder="—" /></div>
-          <div class="form-group"><label>Father Mobile</label><input type="tel" id="ca_famob" placeholder="—" /></div>
-          <div class="form-group"><label>Address <span class="req">*</span></label><input type="text" id="ca_addr" readonly placeholder="—" /></div>
-          <div class="form-group"><label>Is RTE Student? <span class="req">*</span></label><select id="ca_rte"><option value="">— Select —</option><option>Yes</option><option>No</option></select></div>
-          <div class="form-group"><label>Child With Special Needs</label><select id="ca_special"><option value="">— Select —</option><option>Yes</option><option>No</option></select></div>
-          <div class="form-group"><label>Medium <span class="req">*</span></label><select id="ca_medium"><option value="">— Select —</option><option>English</option><option>Hindi</option></select></div>
-          <div class="form-group"><label>Previously Attended School</label><input type="text" id="ca_pschool" placeholder="School name (if any)" /></div>
-          <div class="form-group"><label>Previously Attended Class</label><input type="text" id="ca_pclass" placeholder="Class (if any)" /></div>
-        </div>
-
-        <div class="section-divider">🩺 Assessment Details</div>
-        <div class="form-grid" style="grid-template-columns:1fr;">
-          <div class="form-group"><label>Reason for Referral <span class="req">*</span></label><textarea id="ca_reason" placeholder="Describe why the child was referred for counselling..."></textarea></div>
-          <div class="form-group"><label>Clinical History</label><textarea id="ca_clinical" placeholder="Relevant medical / clinical history..."></textarea></div>
-          <div class="form-group"><label>Family History</label><textarea id="ca_family" placeholder="Family background, relationships, significant events..."></textarea></div>
-          <div class="form-group"><label>Presenting Complaints</label><textarea id="ca_complaints" placeholder="Behaviour, emotional, or academic issues reported..."></textarea></div>
-          <div class="form-group"><label>MSE – Mental Status Examination</label><textarea id="ca_mse" placeholder="Appearance, behaviour, mood, affect, speech, thought, cognition, insight..."></textarea></div>
-          <div class="form-group"><label>Psychological Test</label><textarea id="ca_psych" placeholder="Tests administered and findings / scores..."></textarea></div>
-          <div class="form-group"><label>Behavioural Observation</label><textarea id="ca_behav" placeholder="Observations made during assessment session..."></textarea></div>
-          <div class="form-group"><label>Subject / Topic</label><input type="text" id="ca_subject" placeholder="E.g. Career Guidance, Emotional Support, Academic..." /></div>
-          <div class="form-group"><label>Counsellor's Remarks / Message</label><textarea id="ca_message" placeholder="Additional notes or initial observations..."></textarea></div>
-        </div>
-      </div>
-
-      <!-- ACTION TAKEN -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon">⚡</div>
-          <div>
-            <div class="card-title">Action Taken</div>
-            <div class="card-sub">Record counselling actions and follow-ups</div>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group"><label>Session Date <span class="req">*</span></label><input type="date" id="at_date" /></div>
-          <div class="form-group"><label>Session No.</label><input type="number" id="at_sessno" placeholder="e.g. 1" min="1" /></div>
-          <div class="form-group"><label>Counsellor Name <span class="req">*</span></label><input type="text" id="at_counsellor" placeholder="Full name of counsellor" /></div>
-          <div class="form-group"><label>Duration (minutes)</label><input type="number" id="at_duration" placeholder="e.g. 45" min="5" /></div>
-          <div class="form-group"><label>Status <span class="req">*</span></label>
-            <select id="at_status">
-              <option value="">— Select —</option>
-              <option>Open</option><option>In Progress</option>
-              <option>Closed</option><option>Referred</option>
+      <div class="special-panel" id="specialPanel">
+        <div class="sub-label" style="margin-bottom:14px;">Special Needs Details</div>
+        <div class="special-grid">
+          <div class="form-group">
+            <label>Disability Type <span class="req">*</span></label>
+            <select id="sp_disability">
+              <option value="">— Select Disability —</option>
+              <optgroup label="Neurodevelopmental">
+                <option>Intellectual Disability</option>
+                <option>Autism Spectrum Disorder (ASD)</option>
+                <option>Attention Deficit / Hyperactivity Disorder (ADHD)</option>
+                <option>Specific Learning Disability (SLD)</option>
+                <option>Communication Disorder</option>
+                <option>Motor Disorder (DCD)</option>
+                <option>Tic Disorder / Tourette Syndrome</option>
+              </optgroup>
+              <optgroup label="Physical / Sensory">
+                <option>Visual Impairment (Low Vision)</option>
+                <option>Blindness</option>
+                <option>Hearing Impairment</option>
+                <option>Deaf-Blindness</option>
+                <option>Locomotor Disability</option>
+                <option>Cerebral Palsy</option>
+                <option>Muscular Dystrophy</option>
+                <option>Dwarfism</option>
+              </optgroup>
+              <optgroup label="Chronic / Health">
+                <option>Chronic Neurological Conditions</option>
+                <option>Haemophilia / Blood Disorder</option>
+                <option>Thalassemia</option>
+                <option>Sickle Cell Disease</option>
+                <option>Acid Attack Victim</option>
+                <option>Multiple Disabilities</option>
+                <option>Speech and Language Impairment</option>
+                <option>Mental Illness</option>
+                <option>Others</option>
+              </optgroup>
             </select>
           </div>
-          <div class="form-group"><label>Follow-up Date</label><input type="date" id="at_followup" /></div>
-        </div>
-
-        <div class="action-block">
-          <div class="action-block-label"><span class="action-dot"></span>Child Counselling</div>
-          <textarea id="at_child" placeholder="Details of direct interaction and counselling conducted with the child..."></textarea>
-        </div>
-        <div class="action-block">
-          <div class="action-block-label"><span class="action-dot"></span>Parent Counselling</div>
-          <textarea id="at_parent" placeholder="Guidance / counselling provided to parents or guardians..."></textarea>
-        </div>
-        <div class="action-block">
-          <div class="action-block-label"><span class="action-dot"></span>Teachers Counselling</div>
-          <textarea id="at_teacher" placeholder="Instructions or support provided to class teacher / staff..."></textarea>
-        </div>
-        <div class="action-block">
-          <div class="action-block-label"><span class="action-dot"></span>Recommendations</div>
-          <textarea id="at_recommend" placeholder="Recommended next steps, therapies, referrals, or interventions..."></textarea>
-        </div>
-
-        <div class="form-grid" style="margin-top:16px;">
-          <div class="form-group"><label>Confirm Date <span class="req">*</span></label><input type="date" id="at_sigdate" /></div>
-          <div class="form-group"><label>Counsellor Signature</label><input type="text" id="at_sig" placeholder="Name as signature" /></div>
-        </div>
-
-        <div class="form-footer no-print">
-          <button class="btn btn-outline" onclick="resetForm()">↩ Reset</button>
-          <button class="btn btn-outline" onclick="window.print()">🖨️ Print / PDF</button>
-          <button class="btn btn-primary" onclick="saveRecord()">💾 Save Record</button>
-        </div>
-      </div>
-
-    </div><!-- end tab-new-session -->
-
-    <!-- ════ TAB: RECORDS ════ -->
-    <div id="tab-records" class="tab-panel" style="display:none;">
-      <div class="card" style="border-radius:0 10px 10px 10px;">
-        <div class="card-header">
-          <div class="card-icon">🗂️</div>
-          <div>
-            <div class="card-title">Counselling Records</div>
-            <div class="card-sub">All saved counselling sessions</div>
+          <div class="form-group">
+            <label>IQ Range</label>
+            <select id="sp_iq">
+              <option value="">— Select IQ Range —</option>
+              <option>Above 130 (Gifted)</option>
+              <option>115-130 (Above Average)</option>
+              <option>85-115 (Average)</option>
+              <option>70-84 (Below Average)</option>
+              <option>55-69 (Mild Intellectual Disability)</option>
+              <option>40-54 (Moderate Intellectual Disability)</option>
+              <option>25-39 (Severe Intellectual Disability)</option>
+              <option>Below 25 (Profound Intellectual Disability)</option>
+              <option>Not Assessed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Accommodation Provided</label>
+            <select id="sp_accommodation">
+              <option value="">— Select —</option>
+              <option>Extra Time (25%)</option>
+              <option>Extra Time (50%)</option>
+              <option>Scribe / Writer</option>
+              <option>Large Print Question Paper</option>
+              <option>Separate Room</option>
+              <option>Assistive Technology</option>
+              <option>Sensory Break Allowance</option>
+              <option>Modified Curriculum</option>
+              <option>Preferential Seating</option>
+              <option>Multiple</option>
+              <option>None Required</option>
+            </select>
           </div>
         </div>
-        <div class="student-search-row" style="margin-bottom:14px;">
-          <div class="ss-wrap" style="position:relative;">
-            <span class="ss-icon">🔍</span>
-            <input type="text" id="recSearch" placeholder="Search records by name, admission no or counsellor..." oninput="filterRec(this.value)" style="padding-left:36px;" />
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Disability Certificate (Upload)</label>
+          <div class="upload-area" onclick="document.getElementById('sp_cert').click()">
+            <input type="file" id="sp_cert" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName('sp_cert','sp_cert_name')"/>
+            <div class="up-title">Click to Upload Certificate</div>
+            <p id="sp_cert_name">PDF, JPG or PNG — Max 2MB</p>
           </div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>Student Name</th><th>Adm. No.</th>
-                <th>Class</th><th>Counsellor</th><th>Date</th>
-                <th>Session</th><th>Status</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="recBody">
-              <tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 14px;">No records yet. Save a counselling session to see it here.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <button class="iep-btn" onclick="openIEP()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Open / Create IEP
+        </button>
       </div>
     </div>
 
-  </div><!-- end main -->
-</div><!-- end layout -->
+    <hr class="divider">
+    <div class="sub-label">Assessment Details</div>
+    <div class="form-grid one-col" style="gap:11px;">
+      <div class="form-group"><label>Reason for Referral <span class="req">*</span></label><textarea id="ca_reason" placeholder="Describe the reason why the child has been referred for counselling..."></textarea></div>
+      <div class="form-group"><label>Clinical History</label><textarea id="ca_clinical" placeholder="Any known medical / clinical history relevant to counselling..."></textarea></div>
+      <div class="form-group"><label>Family History</label><textarea id="ca_family_hist" placeholder="Family background, relationships, significant family events..."></textarea></div>
+      <div class="form-group"><label>Presenting Complaints</label><textarea id="ca_complaints" placeholder="Behaviour issues, emotional difficulties, academic struggles reported..."></textarea></div>
+      <div class="form-group"><label>MSE (Mental Status Examination)</label><textarea id="ca_mse" placeholder="Appearance, behaviour, mood, affect, speech, thought, cognition, insight..."></textarea></div>
+      <div class="form-group"><label>Psychological Test</label><textarea id="ca_psych_test" placeholder="Tests administered and findings / scores..."></textarea></div>
+      <div class="form-group"><label>Behavioural Observation</label><textarea id="ca_behaviour" placeholder="Observations during assessment session..."></textarea></div>
+      <div class="form-group"><label>Subject / Topic</label><input type="text" id="ca_subject" placeholder="E.g. Career Guidance, Emotional Support, Academic..."/></div>
+      <div class="form-group"><label>Counsellor Remarks</label><textarea id="ca_message" placeholder="Additional counsellor notes or initial observations..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- ACTION TAKEN -->
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <div><div class="card-title">Action Taken</div><div class="card-sub">Record counselling actions conducted</div></div>
+    </div>
+    <div class="form-grid" style="margin-bottom:14px;">
+      <div class="form-group"><label>Session Date <span class="req">*</span></label><input type="date" id="at_date"/></div>
+      <div class="form-group"><label>Session Number</label><input type="number" id="at_session_no" placeholder="e.g. 1" min="1"/></div>
+      <div class="form-group"><label>Counsellor Name <span class="req">*</span></label><input type="text" id="at_counsellor" placeholder="Full name of counsellor"/></div>
+      <div class="form-group"><label>Duration (minutes)</label><input type="number" id="at_duration" placeholder="e.g. 45" min="5"/></div>
+      <div class="form-group"><label>Status <span class="req">*</span></label><select id="at_status"><option value="">— Select —</option><option>Open</option><option>In Progress</option><option>Closed</option><option>Referred</option></select></div>
+      <div class="form-group"><label>Follow-up Date</label><input type="date" id="at_followup"/></div>
+    </div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Child Counselling</div><textarea id="at_child" placeholder="Details of direct interaction and counselling conducted with the child..."></textarea></div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Parent Counselling</div><textarea id="at_parent" placeholder="Guidance / counselling provided to parents or guardians..."></textarea></div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Teachers Counselling</div><textarea id="at_teacher" placeholder="Instructions or support provided to class teacher / staff..."></textarea></div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Recommendations</div><textarea id="at_recommend" placeholder="Recommended next steps, therapies, referrals, or interventions..."></textarea></div>
+    <div class="form-grid" style="margin-top:14px;">
+      <div class="form-group"><label>Confirm Date <span class="req">*</span></label><input type="date" id="at_sig_date"/></div>
+      <div class="form-group"><label>Counsellor Signature</label><input type="text" id="at_signature" placeholder="Name as signature"/></div>
+    </div>
+    <div class="form-footer no-print">
+      <button class="btn btn-outline" onclick="resetForm()">Reset</button>
+      <button class="btn btn-secondary" onclick="printForm()">Print / PDF</button>
+      <button class="btn btn-primary" onclick="saveRecord()">Save Record</button>
+    </div>
+  </div>
+</div><!-- end new-session -->
+
+
+<!-- ══════════ TAB 2: ALL RECORDS ══════════ -->
+<div id="tab-all-records" class="tab-panel">
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+      <div><div class="card-title">All Counselling Records</div><div class="card-sub">All saved individual counselling sessions</div></div>
+    </div>
+    <div class="search-row" style="margin-bottom:14px;">
+      <div class="search-input-wrap" style="max-width:360px;position:relative;">
+        <span class="s-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="recSearch" placeholder="Search records..." oninput="filterRecords(this.value)"/>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="main-tbl" id="recordsTable">
+        <thead><tr><th>#</th><th>Student Name</th><th>Adm. No.</th><th>Class</th><th>Counsellor</th><th>Date</th><th>Session</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="recordsBody"><tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">No records yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ TAB 3: GROUP SESSIONS ══════════ -->
+<div id="tab-group-sessions" class="tab-panel">
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div><div class="card-title">Group Sessions</div><div class="card-sub">Record group counselling sessions for parents, teachers, and students</div></div>
+    </div>
+
+    <!-- PARENTS -->
+    <div class="sub-label">Parent Session</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Date</label><input type="date" id="gs_parent_date"/></div>
+      <div class="form-group"><label>Facilitator / Counsellor</label><input type="text" id="gs_parent_counsellor" placeholder="Counsellor name"/></div>
+      <div class="form-group"><label>Topic / Agenda</label><input type="text" id="gs_parent_topic" placeholder="e.g. Examination Stress, Nutrition..."/></div>
+    </div>
+    <div class="form-grid one-col" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Notes / Feedback</label><textarea id="gs_parent_notes" placeholder="Key discussion points and parent feedback..."></textarea></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>Upload Parent Attendance / Feedback Form</label>
+      <div class="upload-area" onclick="document.getElementById('gs_parent_file').click()">
+        <input type="file" id="gs_parent_file" accept=".pdf,.jpg,.png,.xlsx" onchange="showFileName('gs_parent_file','gs_parent_fname')"/>
+        <div class="up-title">Click to Upload</div>
+        <p id="gs_parent_fname">PDF, Image or Excel — Max 5MB</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- TEACHERS -->
+    <div class="sub-label">Teacher Session</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Date</label><input type="date" id="gs_teacher_date"/></div>
+      <div class="form-group"><label>Facilitator / Counsellor</label><input type="text" id="gs_teacher_counsellor" placeholder="Counsellor name"/></div>
+      <div class="form-group"><label>Topic / Agenda</label><input type="text" id="gs_teacher_topic" placeholder="e.g. Classroom Management, Child Mental Health..."/></div>
+    </div>
+    <div class="form-grid one-col" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Notes</label><textarea id="gs_teacher_notes" placeholder="Key discussion points and teacher observations..."></textarea></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>Upload Teacher Attendance Sheet</label>
+      <div class="upload-area" onclick="document.getElementById('gs_teacher_file').click()">
+        <input type="file" id="gs_teacher_file" accept=".pdf,.jpg,.png,.xlsx" onchange="showFileName('gs_teacher_file','gs_teacher_fname')"/>
+        <div class="up-title">Click to Upload Attendance Sheet</div>
+        <p id="gs_teacher_fname">PDF, Image or Excel — Max 5MB</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STUDENTS -->
+    <div class="sub-label">Student Group Session</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Date</label><input type="date" id="gs_student_date"/></div>
+      <div class="form-group"><label>Facilitator / Counsellor</label><input type="text" id="gs_student_counsellor" placeholder="Counsellor name"/></div>
+      <div class="form-group"><label>Topic</label><input type="text" id="gs_student_topic" placeholder="e.g. Peer Pressure, Career Guidance, Anti-Bullying..."/></div>
+      <div class="form-group"><label>Class / Group</label><input type="text" id="gs_student_class" placeholder="e.g. Class IX-A or All Class XI"/></div>
+    </div>
+    <div class="form-grid one-col" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Notes / Outcomes</label><textarea id="gs_student_notes" placeholder="Activities conducted, key takeaways and observations..."></textarea></div>
+    </div>
+    <div class="form-footer no-print">
+      <button class="btn btn-outline" onclick="resetGroupForm()">Reset</button>
+      <button class="btn btn-primary" onclick="saveGroupSession()">Save Group Session</button>
+    </div>
+  </div>
+
+  <!-- GROUP RECORDS TABLE -->
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+      <div><div class="card-title">Group Session Records</div></div>
+    </div>
+    <div class="table-wrap">
+      <table class="main-tbl">
+        <thead><tr><th>#</th><th>Type</th><th>Date</th><th>Topic</th><th>Facilitator</th><th>Class / Group</th><th>Actions</th></tr></thead>
+        <tbody id="groupRecordsBody"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No group sessions yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ TAB 4: PWD STUDENTS ══════════ -->
+<div id="tab-pwd-list" class="tab-panel">
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div><div class="card-title">PWD Students — Disability Register</div><div class="card-sub">Students flagged with a disability. Click a student to open their IEP.</div></div>
+    </div>
+    <div class="search-row" style="margin-bottom:14px;">
+      <div class="search-input-wrap" style="max-width:360px;position:relative;">
+        <span class="s-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="pwdSearch" placeholder="Search PWD students..." oninput="filterPWD(this.value)"/>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="main-tbl" id="pwdTable">
+        <thead><tr><th>#</th><th>Student Name</th><th>Adm. No.</th><th>Class</th><th>Disability Type</th><th>IQ Range</th><th>Status</th><th>IEP</th></tr></thead>
+        <tbody id="pwdBody"><tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px;">No PWD students saved yet. Save a child assessment with special needs enabled.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- main-content -->
+
+
+<!-- ══════════ IEP MODAL ══════════ -->
+<div class="modal-overlay" id="iepModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h2>INDIVIDUALIZED EDUCATION PLAN (IEP) &nbsp;<span class="confidential-badge">Confidential</span></h2>
+        <small>School Year: 2025–2026 &nbsp;|&nbsp; HEMA Higher Secondary School, Govindpura, Bhopal</small>
+      </div>
+      <button class="modal-close" onclick="closeIEP()">&#x2715;</button>
+    </div>
+
+    <!-- MONTH TABS -->
+    <div style="padding:14px 20px 0;border-bottom:1.5px solid var(--border);">
+      <div class="section-label">Select Month</div>
+      <div class="month-tabs" id="monthTabs"></div>
+    </div>
+
+    <div class="modal-body" id="iepBody">
+      <!-- Section 1: Student Info -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">1</span> STUDENT INFORMATION</div>
+        <div class="iep-grid">
+          <div class="form-group"><label>Full Name</label><input type="text" id="iep_name" readonly/></div>
+          <div class="form-group"><label>Date of Birth</label><input type="text" id="iep_dob" readonly/></div>
+          <div class="form-group"><label>Age</label><input type="text" id="iep_age" readonly/></div>
+          <div class="form-group"><label>Grade Level</label><input type="text" id="iep_grade" readonly/></div>
+          <div class="form-group"><label>Student ID</label><input type="text" id="iep_sid" readonly/></div>
+          <div class="form-group"><label>Primary Language</label><input type="text" id="iep_lang" value="Hindi / English"/></div>
+          <div class="form-group"><label>Disability Category</label><input type="text" id="iep_disability" readonly/></div>
+          <div class="form-group"><label>IEP Meeting Date</label><input type="date" id="iep_meeting_date"/></div>
+          <div class="form-group"><label>Effective Date</label><input type="date" id="iep_effective"/></div>
+        </div>
+      </div>
+      <!-- Section 2 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">2</span> PRESENT LEVEL OF PERFORMANCE (PLAAFP)</div>
+        <div class="iep-grid full" style="gap:10px;">
+          <div class="form-group"><label>Strengths & Interests</label><textarea id="iep_strengths" rows="2" placeholder="List student's strengths, interests, and learning preferences..."></textarea></div>
+          <div class="form-group"><label>Parental Concerns</label><textarea id="iep_parent_concerns" rows="2" placeholder="Concerns raised by parents or guardians..."></textarea></div>
+          <div class="form-group"><label>Functional Performance (Social-emotional, behaviour, motor skills)</label><textarea id="iep_functional" rows="2" placeholder="Current functional level..."></textarea></div>
+          <div class="form-group"><label>Impact Statement (How disability affects general curriculum)</label><textarea id="iep_impact" rows="2" placeholder="Describe how the disability impacts learning..."></textarea></div>
+        </div>
+      </div>
+      <!-- Section 3 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">3</span> ANNUAL MEASURABLE GOALS</div>
+        <div class="iep-grid" style="gap:10px;">
+          <div class="form-group"><label>Goal #1 (Social-Emotional / Counselling)</label><textarea id="iep_goal1" rows="2" placeholder="Describe goal..."></textarea></div>
+          <div class="form-group"><label>Baseline (Goal 1)</label><input type="text" id="iep_baseline1" placeholder="Current performance level"/></div>
+          <div class="form-group"><label>Criteria for Success (Goal 1)</label><input type="text" id="iep_criteria1" placeholder="e.g. 80% accuracy over 4 weeks"/></div>
+          <div class="form-group"><label>Goal #2 (Academic / Behavioral)</label><textarea id="iep_goal2" rows="2" placeholder="Describe goal..."></textarea></div>
+          <div class="form-group"><label>Baseline (Goal 2)</label><input type="text" id="iep_baseline2" placeholder="Current performance level"/></div>
+          <div class="form-group"><label>Method of Evaluation (Goal 2)</label><input type="text" id="iep_eval2" placeholder="e.g. Teacher observation, test scores"/></div>
+        </div>
+      </div>
+      <!-- Section 4 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">4</span> SERVICES, ACCOMMODATIONS & MODIFICATIONS</div>
+        <div class="iep-grid full" style="gap:10px;">
+          <div class="form-group"><label>Counselling Services (Frequency, duration, location)</label><input type="text" id="iep_counsel_services" placeholder="e.g. 45 min/week, Individual, Counsellor Room"/></div>
+          <div class="form-group"><label>Classroom Accommodations</label><textarea id="iep_accommodations" rows="2" placeholder="e.g. Extra time, sensory breaks, preferential seating, scribes..."></textarea></div>
+          <div class="form-group"><label>Assistive Technology</label><input type="text" id="iep_assistive" placeholder="e.g. Screen reader, communication device, magnifier"/></div>
+        </div>
+      </div>
+      <!-- Section 5 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">5</span> PLACEMENT & PARTICIPATION</div>
+        <div class="form-group"><label>LRE Statement (Extent of participation with non-disabled peers)</label><textarea id="iep_lre" rows="2" placeholder="Describe the least restrictive environment placement and inclusion plans..."></textarea></div>
+      </div>
+      <!-- Section 6 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">6</span> SKILL EDUCATION PLAN (Vocational / Life Skills)</div>
+        <div class="iep-grid full" style="gap:10px;">
+          <div class="form-group"><label>Target Skills</label><textarea id="iep_skills" rows="2" placeholder="e.g. Computer literacy, self-care, time management, craft, communication..."></textarea></div>
+          <div class="form-group"><label>Support Required</label><textarea id="iep_support" rows="2" placeholder="Staff support, resources, or modifications needed..."></textarea></div>
+        </div>
+      </div>
+      <!-- Section 7 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">7</span> SPORTS & PHYSICAL ACTIVITY</div>
+        <div class="iep-grid">
+          <div class="form-group"><label>Participation Level</label><select id="iep_sports"><option value="">— Select —</option><option>General Physical Education</option><option>Adaptive Physical Education</option><option>Extracurricular Sports</option><option>Limited Participation</option><option>Non-Participatory</option></select></div>
+          <div class="form-group"><label>Necessary Modifications</label><textarea id="iep_sports_mod" rows="2" placeholder="Modified rules, specialized equipment, supervision level..."></textarea></div>
+        </div>
+      </div>
+      <!-- Section 8 -->
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">8</span> SIGNATURES & CONSENT</div>
+        <div class="iep-grid">
+          <div class="form-group"><label>Parent / Guardian Name</label><input type="text" id="iep_parent_sign" placeholder="Full name"/></div>
+          <div class="form-group"><label>Parent Signature Date</label><input type="date" id="iep_parent_date"/></div>
+          <div class="form-group"><label>Counsellor / Case Manager</label><input type="text" id="iep_counsellor_sign" placeholder="Full name"/></div>
+          <div class="form-group"><label>Counsellor Signature Date</label><input type="date" id="iep_counsellor_date"/></div>
+          <div class="form-group"><label>School Representative</label><input type="text" id="iep_school_sign" placeholder="Full name & designation"/></div>
+          <div class="form-group"><label>School Rep. Date</label><input type="date" id="iep_school_date"/></div>
+        </div>
+      </div>
+    </div><!-- modal-body -->
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeIEP()">Close</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print IEP</button>
+      <button class="btn btn-primary" onclick="saveIEP()">Save IEP</button>
+    </div>
+  </div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ══ STUDENT DATA ══
-const STUDENTS = [
+const STUDENTS=[
   {sid:"727550",name:"A SWASTIK RAO",adm:"10715",cls:"VI",sec:"B",stream:"",gender:"",mobile:"9131553388",wp:"",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"A. NAGMANI RAO",father:"A. KRISHNA RAO",address:"H.NO. 67 B, BHAWANI HILLS, BHOPAL"},
   {sid:"599982",name:"AADARSH YADAV",adm:"11091",cls:"II",sec:"B",stream:"",gender:"male",mobile:"9839562705",wp:"7887241294",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"ANJU YADAV",father:"KRISHNA CHANDRA YADAV",address:"B-BLOCK 306 GOVINDPURA BHOPAL"},
   {sid:"599569",name:"AADHYA NIRAPURE",adm:"11861",cls:"KG I",sec:"B",stream:"",gender:"female",mobile:"7470383303",wp:"9074538173",alt:"",email:"",dob:"",rte:"No",special:"",mother:"CHHAYA NIRAPURE",father:"DILIP KUMAR NIRAPURE",address:"H.NO.66 SECTOR 1 SHANTI NIKETAN CHARWAL GOVINDPURA BHOPAL"},
@@ -698,194 +687,261 @@ const STUDENTS = [
   {sid:"644867",name:"AADI AHIRWAR",adm:"12103",cls:"III",sec:"B",stream:"",gender:"male",mobile:"9753961003",wp:"",alt:"9770446215",email:"",dob:"03 Jun, 2017",rte:"No",special:"0",mother:"ARTI AHIRWAR",father:"SHIVRAJ AHIRWAR",address:"D/64 DILKHUSHA BHAG APSARA BHOPAL"},
   {sid:"603911",name:"AADI SAHU",adm:"9754",cls:"XII",sec:"B",stream:"COMMERCE WITH HINDI",gender:"male",mobile:"9826369298",wp:"",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"GAYATRI SAHU",father:"PRADEEP SAHU",address:"OAK 104, RAJAT GOLDEN NEST, KATARA HILLS, BHOPAL"},
   {sid:"603286",name:"AADITYA BHUMARKAR",adm:"10459",cls:"V",sec:"C",stream:"",gender:"male",mobile:"9755620084",wp:"9111608240",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"PRIYANKA BHUMARKAR",father:"AJEET BHUMARKAR",address:"HIG-30 PURVANCHAL PHASE 1 BDA ROAD KHAJURI KALAN PIPLANI"},
-  {sid:"603325",name:"AAHANA BISWAS",adm:"9770",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"9425028001",wp:"8989160380",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"NAMITA BISWAS",father:"DEBASISH BISWAS",address:"H.NO. 32, GEET MOHINI BUNGALOWS, PHASE-VI, AYODHYA NAGAR, BHOPAL"},
+  {sid:"603325",name:"AAHANA BISWAS",adm:"9770",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"9425028001",wp:"8989160380",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"NAMITA BISWAS",father:"DEBASISH BISWAS",address:"H.NO. 32, GEET MOHINI BUNGALOWS, PHASE - VI, AYODHYA NAGAR, BYPASS ROAD, BHOPAL"},
   {sid:"583724",name:"AAKRITI MALVIYA",adm:"9238",cls:"XI",sec:"B",stream:"COMMERCE WITH PHYSICAL EDUCATION",gender:"female",mobile:"9131359081",wp:"9131359081",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"Lt. BHAVANA MALVIYA",father:"DHIRENDRA MALVIYA",address:"HOUSE NO. 420 RACHANA NAGAR, BHOPAL (M P)"},
   {sid:"603590",name:"AAKRITI MEHRA",adm:"9959",cls:"VIII",sec:"A",stream:"",gender:"female",mobile:"9303702143",wp:"9713961600",alt:"",email:"piyushsahu7566@gmail.com",dob:"04 Jan, 2012",rte:"No",special:"0",mother:"PIYUSH MEHRA",father:"AJAY MEHRA",address:"H.NO 324, ROOP NAGAR GOVINDPURA, BHOPAL"},
-  {sid:"603459",name:"AAHIL NASEEM KHAN",adm:"10907",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"male",mobile:"7987213698",wp:"8319527672",alt:"",email:"",dob:"",rte:"No",special:"",mother:"SAYMA BEGUM",father:"MOHAMMAD NASEEM KHAN",address:"402-A, HOUSING BOARD COLONY, AISHBAGH, BHOPAL"},
   {sid:"706783",name:"AANAND KUMAR MISHRA",adm:"12174",cls:"XI",sec:"B",stream:"COMMERCE WITH COMPUTER SCIENCE",gender:"male",mobile:"7067546020",wp:"",alt:"9201120480",email:"",dob:"16 Sep, 2009",rte:"No",special:"0",mother:"RANJANA MISHRA",father:"DILIP KUMAR MISHRA",address:"H.NO.-54 NAVIN SWAMI VIVEKANAND NAGAR PIPLANI BHOPAL"},
-  {sid:"603500",name:"AANCHAL BATHAM",adm:"11337",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"7869248143",wp:"",alt:"6265494945",email:"",dob:"",rte:"No",special:"0",mother:"RITU BATHAM",father:"KRISHNA KUMAR BATHAM",address:"H. NO. C-39, SAMRAT COLONY, ASHOKA GARDEN, BHOPAL"},
-  {sid:"603408",name:"AARADHYA",adm:"10947",cls:"V",sec:"B",stream:"",gender:"female",mobile:"9755452042",wp:"",alt:"",email:"",dob:"",rte:"No",special:"",mother:"RENUKA",father:"VENUGOPAL",address:"503, VIKAS NAGAR, D-SECTOR, NEAR ROYAL H.S SCHOOL, BHOPAL"},
-  {sid:"603421",name:"AARADHYA MOURYA",adm:"10986",cls:"V",sec:"B",stream:"",gender:"female",mobile:"9131808890",wp:"9691782732",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"PINKY MOURYA",father:"VIJAY KUMAR MOURYA",address:"LIG-124, BHARTI NIKETAN, GOVINDPURA, BHOPAL"},
+  {sid:"603500",name:"AANCHAL BATHAM",adm:"11337",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"7869248143",wp:"",alt:"6265494945",email:"",dob:"",rte:"No",special:"0",mother:"RITU BATHAM",father:"KRISHNA KUMAR BATHAM",address:"H. NO. C-39, SAMRAT COLONY, ASHOKA GARDEN, NEAR DUSSEHRA MAIDAN, BHOPAL"},
   {sid:"603908",name:"YASHI MANZHI",adm:"9539",cls:"XII",sec:"A",stream:"PCM WITH PSYCHOLOGY",gender:"female",mobile:"8959750702",wp:"7566799302",alt:"",email:"",dob:"",rte:"No",special:"",mother:"HARCHAT",father:"SANJAY MANZHI",address:"SEC-C-12/2 SUBHASH COLONY ASHOKA GARDEN BPL"},
   {sid:"603828",name:"YATHARTH GUPTA",adm:"11607",cls:"X",sec:"B",stream:"CLASS X WITH SANSKRIT",gender:"male",mobile:"7000562029",wp:"",alt:"9893208349",email:"",dob:"",rte:"No",special:"0",mother:"RITA GUPTA",father:"VINEET GUPTA",address:"357-A PHASE GOPAL NAGAR, BHEL BHOPAL"},
   {sid:"603834",name:"YASHASVI PATIL",adm:"11030",cls:"X",sec:"A",stream:"CLASS X WITH HINDI",gender:"female",mobile:"8770879831",wp:"6261005588",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"VINITA PATIL",father:"CHANDRAKANT PATIL",address:"L-214, BHARTI NIKETAN, BHOPAL"},
 ];
 
-let allRecords = JSON.parse(localStorage.getItem('hem_counsellingRec') || '[]');
-let selectedStudent = null;
-
-// ══ SEARCH ══
-function searchStudents(q) {
-  const dd = document.getElementById('searchDropdown');
-  if (!q || q.length < 2) { dd.style.display = 'none'; return; }
-  const t = q.toLowerCase();
-  const m = STUDENTS.filter(s =>
-    s.name.toLowerCase().includes(t) || s.adm.includes(t) || s.mobile.includes(t)
-  ).slice(0, 8);
-  dd.innerHTML = m.length
-    ? m.map(s => `<div class="drop-item" onclick="selectStudent('${s.sid}')">
-        <div class="drop-avatar">${s.name[0]}</div>
-        <div><div class="drop-name">${s.name}</div>
-        <div class="drop-detail">Adm: ${s.adm} &nbsp;|&nbsp; Class: ${s.cls} ${s.sec} &nbsp;|&nbsp; ${s.mobile}</div></div>
-      </div>`).join('')
-    : `<div class="no-result">No students found for "${q}"</div>`;
-  dd.style.display = 'block';
+function calcAge(dobStr){
+  if(!dobStr)return '—';
+  const months={'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11};
+  const p=dobStr.trim().split(' ');
+  if(p.length<3)return '—';
+  const d=new Date(parseInt(p[2]),months[p[1]],parseInt(p[0]));
+  if(isNaN(d))return '—';
+  const now=new Date();
+  let age=now.getFullYear()-d.getFullYear();
+  const m=now.getMonth()-d.getMonth();
+  if(m<0||(m===0&&now.getDate()<d.getDate()))age--;
+  return age+' yrs';
 }
 
-function selectStudent(sid) {
-  const s = STUDENTS.find(x => x.sid === sid);
-  if (!s) return;
-  selectedStudent = s;
-  // Banner
-  const b = document.getElementById('studentBanner');
-  b.classList.add('show');
-  document.getElementById('sbAv').textContent = s.name[0];
-  document.getElementById('sbName').textContent = s.name;
-  document.getElementById('sbAdm').textContent = s.adm;
-  document.getElementById('sbCls').textContent = s.cls;
-  document.getElementById('sbSec').textContent = s.sec;
-  document.getElementById('sbMob').textContent = s.mobile;
-  document.getElementById('sbFa').textContent = s.father;
-  document.getElementById('sbMo').textContent = s.mother;
-  document.getElementById('sbGender').textContent = s.gender ? s.gender.toUpperCase() : 'N/A';
-  // Form
-  document.getElementById('ca_name').value    = s.name;
-  document.getElementById('ca_mobile').value  = s.mobile;
-  document.getElementById('ca_wp').value      = s.wp;
-  document.getElementById('ca_alt').value     = s.alt;
-  document.getElementById('ca_email').value   = s.email;
-  document.getElementById('ca_class').value   = s.cls;
-  document.getElementById('ca_sec').value     = s.sec;
-  document.getElementById('ca_stream').value  = s.stream;
-  document.getElementById('ca_gender').value  = s.gender;
-  document.getElementById('ca_dob').value     = s.dob;
-  document.getElementById('ca_mother').value  = s.mother;
-  document.getElementById('ca_father').value  = s.father;
-  document.getElementById('ca_addr').value    = s.address;
-  document.getElementById('ca_rte').value     = s.rte;
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('at_date').value    = today;
-  document.getElementById('at_sigdate').value = today;
-  document.getElementById('studentSearch').value = s.name;
-  document.getElementById('searchDropdown').style.display = 'none';
-  showToast('✅ Student data auto-filled successfully!');
+let allRecords=JSON.parse(localStorage.getItem('counsellingRecords')||'[]');
+let allGroupRecords=JSON.parse(localStorage.getItem('groupRecords')||'[]');
+let allIEPs=JSON.parse(localStorage.getItem('iepRecords')||'{}');
+let selectedStudent=null;
+const MONTHS=['April','May','June','July','August','September','October','November','December','January','February','March'];
+
+// ── SEARCH ──
+function searchStudents(q){
+  const dd=document.getElementById('searchDropdown');
+  if(!q||q.length<2){dd.style.display='none';return;}
+  const t=q.toLowerCase();
+  const m=STUDENTS.filter(s=>s.name.toLowerCase().includes(t)||s.adm.includes(t)||s.mobile.includes(t)).slice(0,8);
+  dd.innerHTML=m.length?m.map(s=>`<div class="result-item" onclick="selectStudent('${s.sid}')"><div class="result-avatar">${s.name[0]}</div><div class="result-info"><div class="rname">${s.name}</div><div class="rdetail">Adm: ${s.adm} | Class: ${s.cls} ${s.sec} | ${s.mobile}</div></div></div>`).join(''):'<div class="no-result">No students found</div>';
+  dd.style.display='block';
 }
 
-function clearSearch() {
-  document.getElementById('studentSearch').value = '';
-  document.getElementById('searchDropdown').style.display = 'none';
-  document.getElementById('studentBanner').classList.remove('show');
-  selectedStudent = null;
+function selectStudent(sid){
+  const s=STUDENTS.find(x=>x.sid===sid);
+  if(!s)return;
+  selectedStudent=s;
+  const card=document.getElementById('studentCard');
+  card.classList.add('visible');
+  const age=calcAge(s.dob);
+  document.getElementById('scAvatar').textContent=s.name[0];
+  document.getElementById('scName').textContent=s.name;
+  document.getElementById('scAdm').textContent=s.adm;
+  document.getElementById('scClass').textContent=s.cls;
+  document.getElementById('scSec').textContent=s.sec;
+  document.getElementById('scAge').textContent=age;
+  document.getElementById('scMob').textContent=s.mobile;
+  document.getElementById('scFather').textContent=s.father;
+  document.getElementById('scGender').textContent=s.gender?s.gender.toUpperCase():'N/A';
+  document.getElementById('ca_name').value=s.name;
+  document.getElementById('ca_age').value=age;
+  document.getElementById('ca_mobile').value=s.mobile;
+  document.getElementById('ca_whatsapp').value=s.wp;
+  document.getElementById('ca_alt').value=s.alt;
+  document.getElementById('ca_email').value=s.email;
+  document.getElementById('ca_class').value=s.cls+(s.sec?' - '+s.sec:'');
+  document.getElementById('ca_section').value=s.sec;
+  document.getElementById('ca_stream').value=s.stream;
+  document.getElementById('ca_gender').value=s.gender;
+  document.getElementById('ca_dob').value=s.dob;
+  document.getElementById('ca_mother').value=s.mother;
+  document.getElementById('ca_father').value=s.father;
+  document.getElementById('ca_address').value=s.address;
+  document.getElementById('ca_rte').value=s.rte;
+  document.getElementById('studentSearch').value=s.name;
+  document.getElementById('searchDropdown').style.display='none';
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('at_date').value=today;
+  document.getElementById('at_sig_date').value=today;
+  showToast('Student data loaded automatically.');
+}
+
+function clearSearch(){
+  document.getElementById('studentSearch').value='';
+  document.getElementById('searchDropdown').style.display='none';
+  document.getElementById('studentCard').classList.remove('visible');
+  selectedStudent=null;
   resetForm();
 }
-
-document.addEventListener('click', e => {
-  if (!document.getElementById('ssWrap').contains(e.target))
-    document.getElementById('searchDropdown').style.display = 'none';
+document.addEventListener('click',e=>{
+  const w=document.getElementById('searchWrap');
+  if(w&&!w.contains(e.target))document.getElementById('searchDropdown').style.display='none';
 });
 
-// ══ SAVE ══
-function saveRecord() {
-  if (!selectedStudent) { showToast('⚠️ Please search and select a student first!', true); return; }
-  const rec = {
-    id: Date.now(),
-    sid: selectedStudent.sid,
-    studentName: selectedStudent.name,
-    adm: selectedStudent.adm,
-    cls: selectedStudent.cls + ' ' + selectedStudent.sec,
-    counsellor: document.getElementById('at_counsellor').value || '—',
-    date: document.getElementById('at_date').value,
-    sessno: document.getElementById('at_sessno').value || '1',
-    status: document.getElementById('at_status').value || 'Open',
-    reason: document.getElementById('ca_reason').value,
+// ── SPECIAL NEEDS PANEL ──
+function toggleSpecialPanel(v){
+  const p=document.getElementById('specialPanel');
+  p.classList.toggle('show',v==='Yes');
+}
+
+// ── FILE UPLOAD DISPLAY ──
+function showFileName(inputId,labelId){
+  const f=document.getElementById(inputId).files[0];
+  if(f)document.getElementById(labelId).textContent=f.name;
+}
+
+// ── IEP MODAL ──
+function buildMonthTabs(){
+  const c=document.getElementById('monthTabs');
+  c.innerHTML=MONTHS.map((m,i)=>`<div class="month-tab${i===0?' active':''}" onclick="selectMonth(this,'${m}')">${m}</div>`).join('');
+}
+function selectMonth(el,m){
+  document.querySelectorAll('.month-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+function openIEP(){
+  if(!selectedStudent){showToast('Please select a student first.',true);return;}
+  buildMonthTabs();
+  document.getElementById('iep_name').value=selectedStudent.name;
+  document.getElementById('iep_dob').value=selectedStudent.dob;
+  document.getElementById('iep_age').value=calcAge(selectedStudent.dob);
+  document.getElementById('iep_grade').value=selectedStudent.cls+' '+selectedStudent.sec;
+  document.getElementById('iep_sid').value=selectedStudent.sid;
+  document.getElementById('iep_disability').value=document.getElementById('sp_disability').value;
+  const saved=allIEPs[selectedStudent.sid]||{};
+  Object.keys(saved).forEach(k=>{const el=document.getElementById(k);if(el)el.value=saved[k];});
+  document.getElementById('iepModal').classList.add('open');
+}
+function closeIEP(){document.getElementById('iepModal').classList.remove('open');}
+function saveIEP(){
+  if(!selectedStudent)return;
+  const fields=['iep_lang','iep_meeting_date','iep_effective','iep_strengths','iep_parent_concerns','iep_functional','iep_impact','iep_goal1','iep_baseline1','iep_criteria1','iep_goal2','iep_baseline2','iep_eval2','iep_counsel_services','iep_accommodations','iep_assistive','iep_lre','iep_skills','iep_support','iep_sports','iep_sports_mod','iep_parent_sign','iep_parent_date','iep_counsellor_sign','iep_counsellor_date','iep_school_sign','iep_school_date'];
+  const data={};
+  fields.forEach(k=>{const el=document.getElementById(k);if(el)data[k]=el.value;});
+  allIEPs[selectedStudent.sid]=data;
+  localStorage.setItem('iepRecords',JSON.stringify(allIEPs));
+  showToast('IEP saved successfully.');
+  closeIEP();
+}
+
+// ── SAVE RECORD ──
+function saveRecord(){
+  if(!selectedStudent){showToast('Please search and select a student first.',true);return;}
+  const disability=document.getElementById('sp_disability').value;
+  const iq=document.getElementById('sp_iq').value;
+  const special=document.getElementById('ca_special').value;
+  const rec={
+    id:Date.now(),sid:selectedStudent.sid,studentName:selectedStudent.name,adm:selectedStudent.adm,
+    cls:selectedStudent.cls+' '+selectedStudent.sec,counsellor:document.getElementById('at_counsellor').value||'—',
+    date:document.getElementById('at_date').value,sessionNo:document.getElementById('at_session_no').value||'1',
+    status:document.getElementById('at_status').value||'Open',
+    isSpecial:special==='Yes',disability,iq,
   };
   allRecords.unshift(rec);
-  localStorage.setItem('hem_counsellingRec', JSON.stringify(allRecords));
-  updateStats();
-  renderRec(allRecords);
-  showToast('✅ Counselling record saved successfully!');
+  localStorage.setItem('counsellingRecords',JSON.stringify(allRecords));
+  renderRecords(allRecords);
+  renderPWD();
+  showToast('Counselling record saved successfully.');
 }
 
-// ══ STATS ══
-function updateStats() {
-  document.getElementById('st-total').textContent  = allRecords.length;
-  document.getElementById('st-open').textContent   = allRecords.filter(r => r.status === 'Open').length;
-  document.getElementById('st-prog').textContent   = allRecords.filter(r => r.status === 'In Progress').length;
-  document.getElementById('st-closed').textContent = allRecords.filter(r => r.status === 'Closed').length;
+// ── RENDER RECORDS ──
+function renderRecords(data){
+  const body=document.getElementById('recordsBody');
+  if(!data.length){body.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">No records yet.</td></tr>';return;}
+  const sc={'Open':'badge-open','In Progress':'badge-progress','Closed':'badge-closed','Referred':'badge-referred'};
+  body.innerHTML=data.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.adm}</td><td>${r.cls}</td><td>${r.counsellor}</td><td>${r.date||'—'}</td><td>Session ${r.sessionNo}</td><td><span class="badge ${sc[r.status]||'badge-open'}">${r.status}</span></td><td><button class="btn btn-secondary btn-sm" onclick="">View</button> <button class="btn btn-sm" style="background:var(--danger-bg);color:var(--danger);border:none;" onclick="deleteRecord(${r.id})">Delete</button></td></tr>`).join('');
 }
+function filterRecords(q){const t=q.toLowerCase();renderRecords(allRecords.filter(r=>r.studentName.toLowerCase().includes(t)||r.adm.includes(t)||(r.counsellor||'').toLowerCase().includes(t)));}
+function deleteRecord(id){if(!confirm('Delete this record?'))return;allRecords=allRecords.filter(r=>r.id!==id);localStorage.setItem('counsellingRecords',JSON.stringify(allRecords));renderRecords(allRecords);renderPWD();showToast('Record deleted.');}
+renderRecords(allRecords);
 
-// ══ RECORDS TABLE ══
-function renderRec(data) {
-  const body = document.getElementById('recBody');
-  if (!data.length) {
-    body.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">No records yet.</td></tr>';
-    return;
-  }
-  const sc = { 'Open': 's-open', 'In Progress': 's-progress', 'Closed': 's-closed', 'Referred': 's-referred' };
-  body.innerHTML = data.map((r, i) => `
-    <tr>
-      <td>${i + 1}</td>
-      <td><strong>${r.studentName}</strong></td>
-      <td>${r.adm}</td>
-      <td>${r.cls}</td>
-      <td>${r.counsellor}</td>
-      <td>${r.date || '—'}</td>
-      <td>Session ${r.sessno}</td>
-      <td><span class="status-pill ${sc[r.status] || 's-open'}">${r.status}</span></td>
-      <td>
-        <button class="tbl-btn tb-view">View</button>
-        <button class="tbl-btn tb-del" onclick="delRec(${r.id})">Delete</button>
-      </td>
-    </tr>`).join('');
+// ── PWD ──
+function renderPWD(){
+  const pwd=allRecords.filter(r=>r.isSpecial);
+  const body=document.getElementById('pwdBody');
+  if(!pwd.length){body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px;">No PWD students saved yet.</td></tr>';return;}
+  const seen=new Set();
+  const unique=pwd.filter(r=>{if(seen.has(r.sid))return false;seen.add(r.sid);return true;});
+  body.innerHTML=unique.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.adm}</td><td>${r.cls}</td><td><span class="pwd-tag">${r.disability||'—'}</span></td><td>${r.iq||'—'}</td><td><span class="badge badge-progress">Active</span></td><td><button class="btn btn-primary btn-sm" onclick="openIEPFromPWD('${r.sid}')">Open IEP</button></td></tr>`).join('');
 }
-function filterRec(q) {
-  const t = q.toLowerCase();
-  renderRec(allRecords.filter(r =>
-    r.studentName.toLowerCase().includes(t) || r.adm.includes(t) || r.counsellor.toLowerCase().includes(t)
-  ));
+function filterPWD(q){
+  const t=q.toLowerCase();
+  const pwd=allRecords.filter(r=>r.isSpecial&&(r.studentName.toLowerCase().includes(t)||r.adm.includes(t)||(r.disability||'').toLowerCase().includes(t)));
+  const body=document.getElementById('pwdBody');
+  if(!pwd.length){body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px;">No matching PWD students.</td></tr>';return;}
+  const seen=new Set();
+  const unique=pwd.filter(r=>{if(seen.has(r.sid))return false;seen.add(r.sid);return true;});
+  body.innerHTML=unique.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.adm}</td><td>${r.cls}</td><td><span class="pwd-tag">${r.disability||'—'}</span></td><td>${r.iq||'—'}</td><td><span class="badge badge-progress">Active</span></td><td><button class="btn btn-primary btn-sm" onclick="openIEPFromPWD('${r.sid}')">Open IEP</button></td></tr>`).join('');
 }
-function delRec(id) {
-  if (!confirm('Delete this counselling record?')) return;
-  allRecords = allRecords.filter(r => r.id !== id);
-  localStorage.setItem('hem_counsellingRec', JSON.stringify(allRecords));
-  updateStats(); renderRec(allRecords);
-  showToast('🗑️ Record deleted.');
+function openIEPFromPWD(sid){
+  const r=allRecords.find(x=>x.sid===sid);
+  if(!r)return;
+  const s=STUDENTS.find(x=>x.sid===sid)||{sid,name:r.studentName,dob:'',cls:r.cls,sec:'',adm:r.adm};
+  selectedStudent=s;
+  buildMonthTabs();
+  document.getElementById('iep_name').value=r.studentName;
+  document.getElementById('iep_dob').value=s.dob||'';
+  document.getElementById('iep_age').value=calcAge(s.dob);
+  document.getElementById('iep_grade').value=r.cls;
+  document.getElementById('iep_sid').value=sid;
+  document.getElementById('iep_disability').value=r.disability||'';
+  const saved=allIEPs[sid]||{};
+  Object.keys(saved).forEach(k=>{const el=document.getElementById(k);if(el)el.value=saved[k];});
+  document.getElementById('iepModal').classList.add('open');
 }
+renderPWD();
 
-// ══ TABS ══
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).style.display = 'block';
-  btn.classList.add('active');
+// ── GROUP SESSIONS ──
+function saveGroupSession(){
+  const gs={
+    id:Date.now(),
+    parent:{date:document.getElementById('gs_parent_date').value,counsellor:document.getElementById('gs_parent_counsellor').value,topic:document.getElementById('gs_parent_topic').value,notes:document.getElementById('gs_parent_notes').value},
+    teacher:{date:document.getElementById('gs_teacher_date').value,counsellor:document.getElementById('gs_teacher_counsellor').value,topic:document.getElementById('gs_teacher_topic').value,notes:document.getElementById('gs_teacher_notes').value},
+    student:{date:document.getElementById('gs_student_date').value,counsellor:document.getElementById('gs_student_counsellor').value,topic:document.getElementById('gs_student_topic').value,cls:document.getElementById('gs_student_class').value,notes:document.getElementById('gs_student_notes').value},
+  };
+  allGroupRecords.unshift(gs);
+  localStorage.setItem('groupRecords',JSON.stringify(allGroupRecords));
+  renderGroupRecords();
+  showToast('Group session saved successfully.');
 }
-
-// ══ RESET ══
-function resetForm() {
-  ['ca_reason','ca_clinical','ca_family','ca_complaints','ca_mse','ca_psych','ca_behav',
-   'ca_subject','ca_message','at_counsellor','at_sessno','at_duration','at_child',
-   'at_parent','at_teacher','at_recommend','at_sig','ca_pschool','ca_pclass',
-   'ca_momob','ca_famob','ca_wp','ca_alt','ca_email'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.value = '';
+function renderGroupRecords(){
+  const body=document.getElementById('groupRecordsBody');
+  const rows=[];
+  allGroupRecords.forEach((g,i)=>{
+    if(g.parent&&g.parent.topic)rows.push(`<tr><td>${rows.length+1}</td><td><span class="badge badge-open">Parent</span></td><td>${g.parent.date||'—'}</td><td>${g.parent.topic||'—'}</td><td>${g.parent.counsellor||'—'}</td><td>—</td><td><button class="btn btn-sm" style="background:var(--danger-bg);color:var(--danger);border:none;" onclick="deleteGroup(${g.id})">Delete</button></td></tr>`);
+    if(g.teacher&&g.teacher.topic)rows.push(`<tr><td>${rows.length+1}</td><td><span class="badge badge-progress">Teacher</span></td><td>${g.teacher.date||'—'}</td><td>${g.teacher.topic||'—'}</td><td>${g.teacher.counsellor||'—'}</td><td>—</td><td></td></tr>`);
+    if(g.student&&g.student.topic)rows.push(`<tr><td>${rows.length+1}</td><td><span class="badge badge-closed">Student</span></td><td>${g.student.date||'—'}</td><td>${g.student.topic||'—'}</td><td>${g.student.counsellor||'—'}</td><td>${g.student.cls||'—'}</td><td></td></tr>`);
   });
-  ['ca_rte','ca_special','ca_medium','at_status'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.selectedIndex = 0;
-  });
+  body.innerHTML=rows.length?rows.join(''):'<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No group sessions yet.</td></tr>';
+}
+function deleteGroup(id){allGroupRecords=allGroupRecords.filter(g=>g.id!==id);localStorage.setItem('groupRecords',JSON.stringify(allGroupRecords));renderGroupRecords();showToast('Group record deleted.');}
+function resetGroupForm(){['gs_parent_date','gs_parent_counsellor','gs_parent_topic','gs_parent_notes','gs_teacher_date','gs_teacher_counsellor','gs_teacher_topic','gs_teacher_notes','gs_student_date','gs_student_counsellor','gs_student_topic','gs_student_class','gs_student_notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
+renderGroupRecords();
+
+// ── TABS ──
+function switchTab(name,el){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(el)el.classList.add('active');
 }
 
-// ══ TOAST ══
-function showToast(msg, warn = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = warn ? '#c62828' : '#1a7a2e';
+// ── RESET ──
+function resetForm(){
+  ['ca_reason','ca_clinical','ca_family_hist','ca_complaints','ca_mse','ca_psych_test','ca_behaviour','ca_subject','ca_message','at_counsellor','at_session_no','at_duration','at_child','at_parent','at_teacher','at_recommend','at_signature','ca_prev_school','ca_prev_class','ca_mother_mob','ca_father_mob','ca_whatsapp','ca_alt','ca_email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['ca_rte','ca_special','ca_medium','at_status','sp_disability','sp_iq','sp_accommodation'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  document.getElementById('specialPanel').classList.remove('show');
+}
+function printForm(){window.print();}
+
+// ── TOAST ──
+function showToast(msg,warn=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=warn?'#c62828':'#2e7d32';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
-
-updateStats();
-renderRec(allRecords);
 </script>
 </body>
 </html>
