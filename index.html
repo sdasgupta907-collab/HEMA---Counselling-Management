@@ -86,7 +86,10 @@
   .form-group{display:flex;flex-direction:column;gap:5px;}
   label{font-size:11.5px;font-weight:600;color:var(--label);}
   label .req{color:#e53935;margin-left:2px;}
-  input[type=text],input[type=date],input[type=email],input[type=tel],input[type=number],input[type=file],select,textarea{padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text);background:var(--input-bg);outline:none;transition:border .18s,box-shadow .18s;font-family:inherit;width:100%;}
+  input[type=text],input[type=date],input[type=email],input[type=tel],input[type=number],input[type=file],select,textarea{
+    padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text);
+    background:var(--input-bg);outline:none;transition:border .18s,box-shadow .18s;font-family:inherit;width:100%;
+  }
   input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(25,118,210,.09);background:#fff;}
   input[readonly]{background:#eef2f7;color:var(--muted);cursor:default;}
   textarea{resize:vertical;min-height:78px;line-height:1.5;}
@@ -170,7 +173,722 @@
 </style>
 </head>
 <body>
-<!-- full body content is IDENTICAL to previous version, including JS, except that you must fill const STUDENTS yourself -->
-<!-- For brevity, I’m not repeating the entire <body> again here, since structure is same as file you already tested. Only STUDENTS data needs expansion. -->
+
+<div class="topbar no-print">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="logo-circle">H</div>
+    <div class="logo-text">HEMA HIGHER SECONDARY SCHOOL</div>
+  </div>
+  <div class="topbar-search">
+    <span class="ts-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+    <input type="text" placeholder="Search student by name, father name, admission no or mobile no...."/>
+  </div>
+  <div class="topbar-right">
+    <div class="session-tag">Session: <strong>2025 - 2026</strong></div>
+    <div class="topbar-avatar">C</div>
+  </div>
+</div>
+
+<div class="page-title-bar no-print">
+  <h1>Welcome, <span>HEMA EDUCATION SOCIETY</span></h1>
+  <div class="breadcrumb"><a href="#">Dashboard</a> / Counselling Management</div>
+</div>
+
+<div class="tabs-bar no-print">
+  <button class="tab-btn active" onclick="switchTab('new-session',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>New Session
+  </button>
+  <button class="tab-btn" onclick="switchTab('all-records',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>All Records
+  </button>
+  <button class="tab-btn" onclick="switchTab('group-sessions',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Group Sessions
+  </button>
+  <button class="tab-btn" onclick="switchTab('pwd-list',this)">
+    <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>PWD Students
+  </button>
+</div>
+
+<div class="main-content">
+
+<div id="tab-new-session" class="tab-panel active">
+
+  <div class="search-section no-print">
+    <div class="section-label">Search Student</div>
+    <div class="search-row">
+      <div class="search-input-wrap" id="searchWrap">
+        <span class="s-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="studentSearch" placeholder="Search by name, Admission No. or mobile..." oninput="searchStudents(this.value)" autocomplete="off"/>
+        <div class="search-results-dropdown" id="searchDropdown"></div>
+      </div>
+      <button class="btn-ghost-clear no-print" onclick="clearSearch()">Clear</button>
+    </div>
+  </div>
+
+  <div class="student-card" id="studentCard">
+    <div class="sc-avatar" id="scAvatar">?</div>
+    <div class="sc-details">
+      <div class="sc-name" id="scName">—</div>
+      <div class="sc-meta">
+        <div class="sc-tag"><span>Adm:</span>&nbsp;<strong id="scAdm">—</strong></div>
+        <div class="sc-tag"><span>Class:</span>&nbsp;<strong id="scClass">—</strong></div>
+        <div class="sc-tag"><span>Sec:</span>&nbsp;<strong id="scSec">—</strong></div>
+        <div class="sc-tag"><span>Age:</span>&nbsp;<strong id="scAge">—</strong></div>
+        <div class="sc-tag"><span>Mobile:</span>&nbsp;<strong id="scMob">—</strong></div>
+        <div class="sc-tag"><span>Father:</span>&nbsp;<strong id="scFather">—</strong></div>
+      </div>
+    </div>
+    <div class="sc-badge" id="scGender">—</div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div><div class="card-title">Child Assessment</div><div class="card-sub">Complete the psycho-social assessment of the child</div></div>
+    </div>
+
+    <div class="sub-label">Student Information (Auto-filled)</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Student Name <span class="req">*</span></label><input type="text" id="ca_name" readonly placeholder="Select student above"/></div>
+      <div class="form-group"><label>Age <span class="req">*</span></label><input type="text" id="ca_age" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Date of Birth</label><input type="text" id="ca_dob" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Mobile No. <span class="req">*</span></label><input type="tel" id="ca_mobile" readonly placeholder="—"/></div>
+      <div class="form-group"><label>WhatsApp No.</label><input type="tel" id="ca_whatsapp" placeholder="—"/></div>
+      <div class="form-group"><label>Alternate Number</label><input type="tel" id="ca_alt" placeholder="—"/></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="ca_email" placeholder="—"/></div>
+      <div class="form-group"><label>Class <span class="req">*</span></label><input type="text" id="ca_class" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Section</label><input type="text" id="ca_section" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Stream</label><input type="text" id="ca_stream" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Gender <span class="req">*</span></label><input type="text" id="ca_gender" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Mother's Name <span class="req">*</span></label><input type="text" id="ca_mother" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Father's Name <span class="req">*</span></label><input type="text" id="ca_father" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Mother Mobile</label><input type="tel" id="ca_mother_mob" placeholder="—"/></div>
+      <div class="form-group"><label>Father Mobile</label><input type="tel" id="ca_father_mob" placeholder="—"/></div>
+      <div class="form-group"><label>Address <span class="req">*</span></label><input type="text" id="ca_address" readonly placeholder="—"/></div>
+      <div class="form-group"><label>Medium <span class="req">*</span></label><select id="ca_medium"><option value="">— Select —</option><option>English</option><option>Hindi</option></select></div>
+      <div class="form-group"><label>Is RTE Student? <span class="req">*</span></label><select id="ca_rte"><option value="">— Select —</option><option>Yes</option><option>No</option></select></div>
+      <div class="form-group"><label>Previously Attended School</label><input type="text" id="ca_prev_school" placeholder="School name (if any)"/></div>
+      <div class="form-group"><label>Previously Attended Class</label><input type="text" id="ca_prev_class" placeholder="Class (if any)"/></div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div class="form-group" style="max-width:300px;">
+        <label>Child With Special Needs <span class="req">*</span></label>
+        <select id="ca_special" onchange="toggleSpecialPanel(this.value)">
+          <option value="">— Select —</option><option>Yes</option><option>No</option>
+        </select>
+      </div>
+      <div class="special-panel" id="specialPanel">
+        <div class="sub-label" style="margin-bottom:14px;">Special Needs Details</div>
+        <div class="special-grid">
+          <div class="form-group">
+            <label>Disability Type <span class="req">*</span></label>
+            <select id="sp_disability">
+              <option value="">— Select Disability —</option>
+              <optgroup label="Neurodevelopmental">
+                <option>Intellectual Disability</option>
+                <option>Autism Spectrum Disorder (ASD)</option>
+                <option>Attention Deficit / Hyperactivity Disorder (ADHD)</option>
+                <option>Specific Learning Disability (SLD)</option>
+                <option>Communication Disorder</option>
+                <option>Motor Disorder (DCD)</option>
+                <option>Tic Disorder / Tourette Syndrome</option>
+              </optgroup>
+              <optgroup label="Physical / Sensory">
+                <option>Visual Impairment (Low Vision)</option>
+                <option>Blindness</option>
+                <option>Hearing Impairment</option>
+                <option>Deaf-Blindness</option>
+                <option>Locomotor Disability</option>
+                <option>Cerebral Palsy</option>
+                <option>Muscular Dystrophy</option>
+                <option>Dwarfism</option>
+              </optgroup>
+              <optgroup label="Chronic / Health">
+                <option>Chronic Neurological Conditions</option>
+                <option>Haemophilia / Blood Disorder</option>
+                <option>Thalassemia</option>
+                <option>Sickle Cell Disease</option>
+                <option>Acid Attack Victim</option>
+                <option>Multiple Disabilities</option>
+                <option>Speech and Language Impairment</option>
+                <option>Mental Illness</option>
+                <option>Others</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>IQ Range</label>
+            <select id="sp_iq">
+              <option value="">— Select IQ Range —</option>
+              <option>Above 130 (Gifted)</option>
+              <option>115-130 (Above Average)</option>
+              <option>85-115 (Average)</option>
+              <option>70-84 (Below Average)</option>
+              <option>55-69 (Mild Intellectual Disability)</option>
+              <option>40-54 (Moderate Intellectual Disability)</option>
+              <option>25-39 (Severe Intellectual Disability)</option>
+              <option>Below 25 (Profound Intellectual Disability)</option>
+              <option>Not Assessed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Accommodation Provided</label>
+            <select id="sp_accommodation">
+              <option value="">— Select —</option>
+              <option>Extra Time (25%)</option>
+              <option>Extra Time (50%)</option>
+              <option>Scribe / Writer</option>
+              <option>Large Print Question Paper</option>
+              <option>Separate Room</option>
+              <option>Assistive Technology</option>
+              <option>Sensory Break Allowance</option>
+              <option>Modified Curriculum</option>
+              <option>Preferential Seating</option>
+              <option>Multiple</option>
+              <option>None Required</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Disability Certificate (Upload)</label>
+          <div class="upload-area" onclick="document.getElementById('sp_cert').click()">
+            <input type="file" id="sp_cert" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName('sp_cert','sp_cert_name')"/>
+            <div class="up-title">Click to Upload Certificate</div>
+            <p id="sp_cert_name">PDF, JPG or PNG — Max 2MB</p>
+          </div>
+        </div>
+        <button class="iep-btn" onclick="openIEP()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Open / Create IEP
+        </button>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="sub-label">Assessment Details</div>
+    <div class="form-grid one-col" style="gap:11px;">
+      <div class="form-group"><label>Reason for Referral <span class="req">*</span></label><textarea id="ca_reason" placeholder="Describe the reason why the child has been referred for counselling..."></textarea></div>
+      <div class="form-group"><label>Clinical History</label><textarea id="ca_clinical" placeholder="Any known medical / clinical history relevant to counselling..."></textarea></div>
+      <div class="form-group"><label>Family History</label><textarea id="ca_family_hist" placeholder="Family background, relationships, significant family events..."></textarea></div>
+      <div class="form-group"><label>Presenting Complaints</label><textarea id="ca_complaints" placeholder="Behaviour issues, emotional difficulties, academic struggles reported..."></textarea></div>
+      <div class="form-group"><label>MSE (Mental Status Examination)</label><textarea id="ca_mse" placeholder="Appearance, behaviour, mood, affect, speech, thought, cognition, insight..."></textarea></div>
+      <div class="form-group"><label>Psychological Test</label><textarea id="ca_psych_test" placeholder="Tests administered and findings / scores..."></textarea></div>
+      <div class="form-group"><label>Behavioural Observation</label><textarea id="ca_behaviour" placeholder="Observations during assessment session..."></textarea></div>
+      <div class="form-group"><label>Subject / Topic</label><input type="text" id="ca_subject" placeholder="E.g. Career Guidance, Emotional Support, Academic..."/></div>
+      <div class="form-group"><label>Counsellor Remarks</label><textarea id="ca_message" placeholder="Additional counsellor notes or initial observations..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <div><div class="card-title">Action Taken</div><div class="card-sub">Record counselling actions conducted</div></div>
+    </div>
+    <div class="form-grid" style="margin-bottom:14px;">
+      <div class="form-group"><label>Session Date <span class="req">*</span></label><input type="date" id="at_date"/></div>
+      <div class="form-group"><label>Session Number</label><input type="number" id="at_session_no" placeholder="e.g. 1" min="1"/></div>
+      <div class="form-group"><label>Counsellor Name <span class="req">*</span></label><input type="text" id="at_counsellor" placeholder="Full name of counsellor"/></div>
+      <div class="form-group"><label>Duration (minutes)</label><input type="number" id="at_duration" placeholder="e.g. 45" min="5"/></div>
+      <div class="form-group"><label>Status <span class="req">*</span></label><select id="at_status"><option value="">— Select —</option><option>Open</option><option>In Progress</option><option>Closed</option><option>Referred</option></select></div>
+      <div class="form-group"><label>Follow-up Date</label><input type="date" id="at_followup"/></div>
+    </div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Child Counselling</div><textarea id="at_child" placeholder="Details of direct interaction and counselling conducted with the child..."></textarea></div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Parent Counselling</div><textarea id="at_parent" placeholder="Guidance / counselling provided to parents or guardians..."></textarea></div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Teachers Counselling</div><textarea id="at_teacher" placeholder="Instructions or support provided to class teacher / staff..."></textarea></div>
+    <div class="action-block"><div class="action-block-label"><span class="dot"></span>Recommendations</div><textarea id="at_recommend" placeholder="Recommended next steps, therapies, referrals, or interventions..."></textarea></div>
+    <div class="form-grid" style="margin-top:14px;">
+      <div class="form-group"><label>Confirm Date <span class="req">*</span></label><input type="date" id="at_sig_date"/></div>
+      <div class="form-group"><label>Counsellor Signature</label><input type="text" id="at_signature" placeholder="Name as signature"/></div>
+    </div>
+    <div class="form-footer no-print">
+      <button class="btn btn-outline" onclick="resetForm()">Reset</button>
+      <button class="btn btn-secondary" onclick="printForm()">Print / PDF</button>
+      <button class="btn btn-primary" onclick="saveRecord()">Save Record</button>
+    </div>
+  </div>
+</div>
+
+<div id="tab-all-records" class="tab-panel">
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+      <div><div class="card-title">All Counselling Records</div><div class="card-sub">All saved individual counselling sessions</div></div>
+    </div>
+    <div class="search-row" style="margin-bottom:14px;">
+      <div class="search-input-wrap" style="max-width:360px;position:relative;">
+        <span class="s-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="recSearch" placeholder="Search records..." oninput="filterRecords(this.value)"/>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="main-tbl" id="recordsTable">
+        <thead><tr><th>#</th><th>Student Name</th><th>Adm. No.</th><th>Class</th><th>Counsellor</th><th>Date</th><th>Session</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="recordsBody"><tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">No records yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-group-sessions" class="tab-panel">
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div><div class="card-title">Group Sessions</div><div class="card-sub">Record group counselling sessions for parents, teachers, and students</div></div>
+    </div>
+
+    <div class="sub-label">Parent Session</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Date</label><input type="date" id="gs_parent_date"/></div>
+      <div class="form-group"><label>Facilitator / Counsellor</label><input type="text" id="gs_parent_counsellor" placeholder="Counsellor name"/></div>
+      <div class="form-group"><label>Topic / Agenda</label><input type="text" id="gs_parent_topic" placeholder="e.g. Examination Stress, Nutrition..."/></div>
+    </div>
+    <div class="form-grid one-col" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Notes / Feedback</label><textarea id="gs_parent_notes" placeholder="Key discussion points and parent feedback..."></textarea></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>Upload Parent Attendance / Feedback Form</label>
+      <div class="upload-area" onclick="document.getElementById('gs_parent_file').click()">
+        <input type="file" id="gs_parent_file" accept=".pdf,.jpg,.png,.xlsx" onchange="showFileName('gs_parent_file','gs_parent_fname')"/>
+        <div class="up-title">Click to Upload</div>
+        <p id="gs_parent_fname">PDF, Image or Excel — Max 5MB</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="sub-label">Teacher Session</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Date</label><input type="date" id="gs_teacher_date"/></div>
+      <div class="form-group"><label>Facilitator / Counsellor</label><input type="text" id="gs_teacher_counsellor" placeholder="Counsellor name"/></div>
+      <div class="form-group"><label>Topic / Agenda</label><input type="text" id="gs_teacher_topic" placeholder="e.g. Classroom Management, Child Mental Health..."/></div>
+    </div>
+    <div class="form-grid one-col" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Notes</label><textarea id="gs_teacher_notes" placeholder="Key discussion points and teacher observations..."></textarea></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>Upload Teacher Attendance Sheet</label>
+      <div class="upload-area" onclick="document.getElementById('gs_teacher_file').click()">
+        <input type="file" id="gs_teacher_file" accept=".pdf,.jpg,.png,.xlsx" onchange="showFileName('gs_teacher_file','gs_teacher_fname')"/>
+        <div class="up-title">Click to Upload Attendance Sheet</div>
+        <p id="gs_teacher_fname">PDF, Image or Excel — Max 5MB</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="sub-label">Student Group Session</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Date</label><input type="date" id="gs_student_date"/></div>
+      <div class="form-group"><label>Facilitator / Counsellor</label><input type="text" id="gs_student_counsellor" placeholder="Counsellor name"/></div>
+      <div class="form-group"><label>Topic</label><input type="text" id="gs_student_topic" placeholder="e.g. Peer Pressure, Career Guidance, Anti-Bullying..."/></div>
+      <div class="form-group"><label>Class / Group</label><input type="text" id="gs_student_class" placeholder="e.g. Class IX-A or All Class XI"/></div>
+    </div>
+    <div class="form-grid one-col" style="margin-bottom:12px;">
+      <div class="form-group"><label>Session Notes / Outcomes</label><textarea id="gs_student_notes" placeholder="Activities conducted, key takeaways and observations..."></textarea></div>
+    </div>
+    <div class="form-footer no-print">
+      <button class="btn btn-outline" onclick="resetGroupForm()">Reset</button>
+      <button class="btn btn-primary" onclick="saveGroupSession()">Save Group Session</button>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+      <div><div class="card-title">Group Session Records</div></div>
+    </div>
+    <div class="table-wrap">
+      <table class="main-tbl">
+        <thead><tr><th>#</th><th>Type</th><th>Date</th><th>Topic</th><th>Facilitator</th><th>Class / Group</th><th>Actions</th></tr></thead>
+        <tbody id="groupRecordsBody"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No group sessions yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-pwd-list" class="tab-panel">
+  <div class="form-card">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div><div class="card-title">PWD Students — Disability Register</div><div class="card-sub">Students flagged with a disability. Click a student to open their IEP.</div></div>
+    </div>
+    <div class="search-row" style="margin-bottom:14px;">
+      <div class="search-input-wrap" style="max-width:360px;position:relative;">
+        <span class="s-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="pwdSearch" placeholder="Search PWD students..." oninput="filterPWD(this.value)"/>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="main-tbl" id="pwdTable">
+        <thead><tr><th>#</th><th>Student Name</th><th>Adm. No.</th><th>Class</th><th>Disability Type</th><th>IQ Range</th><th>Status</th><th>IEP</th></tr></thead>
+        <tbody id="pwdBody"><tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px;">No PWD students saved yet. Save a child assessment with special needs enabled.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="iepModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h2>INDIVIDUALIZED EDUCATION PLAN (IEP) &nbsp;<span class="confidential-badge">Confidential</span></h2>
+        <small>School Year: 2025–2026 &nbsp;|&nbsp; HEMA Higher Secondary School, Govindpura, Bhopal</small>
+      </div>
+      <button class="modal-close" onclick="closeIEP()">&#x2715;</button>
+    </div>
+
+    <div style="padding:14px 20px 0;border-bottom:1.5px solid var(--border);">
+      <div class="section-label">Select Month</div>
+      <div class="month-tabs" id="monthTabs"></div>
+    </div>
+
+    <div class="modal-body" id="iepBody">
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">1</span> STUDENT INFORMATION</div>
+        <div class="iep-grid">
+          <div class="form-group"><label>Full Name</label><input type="text" id="iep_name" readonly/></div>
+          <div class="form-group"><label>Date of Birth</label><input type="text" id="iep_dob" readonly/></div>
+          <div class="form-group"><label>Age</label><input type="text" id="iep_age" readonly/></div>
+          <div class="form-group"><label>Grade Level</label><input type="text" id="iep_grade" readonly/></div>
+          <div class="form-group"><label>Student ID</label><input type="text" id="iep_sid" readonly/></div>
+          <div class="form-group"><label>Primary Language</label><input type="text" id="iep_lang" value="Hindi / English"/></div>
+          <div class="form-group"><label>Disability Category</label><input type="text" id="iep_disability" readonly/></div>
+          <div class="form-group"><label>IEP Meeting Date</label><input type="date" id="iep_meeting_date"/></div>
+          <div class="form-group"><label>Effective Date</label><input type="date" id="iep_effective"/></div>
+        </div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">2</span> PRESENT LEVEL OF PERFORMANCE (PLAAFP)</div>
+        <div class="iep-grid full" style="gap:10px;">
+          <div class="form-group"><label>Strengths & Interests</label><textarea id="iep_strengths" rows="2" placeholder="List student's strengths, interests, and learning preferences..."></textarea></div>
+          <div class="form-group"><label>Parental Concerns</label><textarea id="iep_parent_concerns" rows="2" placeholder="Concerns raised by parents or guardians..."></textarea></div>
+          <div class="form-group"><label>Functional Performance (Social-emotional, behaviour, motor skills)</label><textarea id="iep_functional" rows="2" placeholder="Current functional level..."></textarea></div>
+          <div class="form-group"><label>Impact Statement (How disability affects general curriculum)</label><textarea id="iep_impact" rows="2" placeholder="Describe how the disability impacts learning..."></textarea></div>
+        </div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">3</span> ANNUAL MEASURABLE GOALS</div>
+        <div class="iep-grid" style="gap:10px;">
+          <div class="form-group"><label>Goal #1 (Social-Emotional / Counselling)</label><textarea id="iep_goal1" rows="2" placeholder="Describe goal..."></textarea></div>
+          <div class="form-group"><label>Baseline (Goal 1)</label><input type="text" id="iep_baseline1" placeholder="Current performance level"/></div>
+          <div class="form-group"><label>Criteria for Success (Goal 1)</label><input type="text" id="iep_criteria1" placeholder="e.g. 80% accuracy over 4 weeks"/></div>
+          <div class="form-group"><label>Goal #2 (Academic / Behavioral)</label><textarea id="iep_goal2" rows="2" placeholder="Describe goal..."></textarea></div>
+          <div class="form-group"><label>Baseline (Goal 2)</label><input type="text" id="iep_baseline2" placeholder="Current performance level"/></div>
+          <div class="form-group"><label>Method of Evaluation (Goal 2)</label><input type="text" id="iep_eval2" placeholder="e.g. Teacher observation, test scores"/></div>
+        </div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">4</span> SERVICES, ACCOMMODATIONS & MODIFICATIONS</div>
+        <div class="iep-grid full" style="gap:10px;">
+          <div class="form-group"><label>Counselling Services (Frequency, duration, location)</label><input type="text" id="iep_counsel_services" placeholder="e.g. 45 min/week, Individual, Counsellor Room"/></div>
+          <div class="form-group"><label>Classroom Accommodations</label><textarea id="iep_accommodations" rows="2" placeholder="e.g. Extra time, sensory breaks, preferential seating, scribes..."></textarea></div>
+          <div class="form-group"><label>Assistive Technology</label><input type="text" id="iep_assistive" placeholder="e.g. Screen reader, communication device, magnifier"/></div>
+        </div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">5</span> PLACEMENT & PARTICIPATION</div>
+        <div class="form-group"><label>LRE Statement (Extent of participation with non-disabled peers)</label><textarea id="iep_lre" rows="2" placeholder="Describe the least restrictive environment placement and inclusion plans..."></textarea></div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">6</span> SKILL EDUCATION PLAN (Vocational / Life Skills)</div>
+        <div class="iep-grid full" style="gap:10px;">
+          <div class="form-group"><label>Target Skills</label><textarea id="iep_skills" rows="2" placeholder="e.g. Computer literacy, self-care, time management, craft, communication..."></textarea></div>
+          <div class="form-group"><label>Support Required</label><textarea id="iep_support" rows="2" placeholder="Staff support, resources, or modifications needed..."></textarea></div>
+        </div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">7</span> SPORTS & PHYSICAL ACTIVITY</div>
+        <div class="iep-grid">
+          <div class="form-group"><label>Participation Level</label><select id="iep_sports"><option value="">— Select —</option><option>General Physical Education</option><option>Adaptive Physical Education</option><option>Extracurricular Sports</option><option>Limited Participation</option><option>Non-Participatory</option></select></div>
+          <div class="form-group"><label>Necessary Modifications</label><textarea id="iep_sports_mod" rows="2" placeholder="Modified rules, specialized equipment, supervision level..."></textarea></div>
+        </div>
+      </div>
+
+      <div class="iep-section">
+        <div class="iep-section-title"><span class="iep-num">8</span> SIGNATURES & CONSENT</div>
+        <div class="iep-grid">
+          <div class="form-group"><label>Parent / Guardian Name</label><input type="text" id="iep_parent_sign" placeholder="Full name"/></div>
+          <div class="form-group"><label>Parent Signature Date</label><input type="date" id="iep_parent_date"/></div>
+          <div class="form-group"><label>Counsellor / Case Manager</label><input type="text" id="iep_counsellor_sign" placeholder="Full name"/></div>
+          <div class="form-group"><label>Counsellor Signature Date</label><input type="date" id="iep_counsellor_date"/></div>
+          <div class="form-group"><label>School Representative</label><input type="text" id="iep_school_sign" placeholder="Full name & designation"/></div>
+          <div class="form-group"><label>School Rep. Date</label><input type="date" id="iep_school_date"/></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeIEP()">Close</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print IEP</button>
+      <button class="btn btn-primary" onclick="saveIEP()">Save IEP</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ STUDENT DATA (REPLACE / EXTEND THIS ARRAY) ══
+const STUDENTS = [
+  {sid:"727550",name:"A SWASTIK RAO",adm:"10715",cls:"VI",sec:"B",stream:"",gender:"",mobile:"9131553388",wp:"",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"A. NAGMANI RAO",father:"A. KRISHNA RAO",address:"H.NO. 67 B, BHAWANI HILLS, BHOPAL"},
+  {sid:"599982",name:"AADARSH YADAV",adm:"11091",cls:"II",sec:"B",stream:"",gender:"male",mobile:"9839562705",wp:"7887241294",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"ANJU YADAV",father:"KRISHNA CHANDRA YADAV",address:"B-BLOCK 306 GOVINDPURA BHOPAL"},
+  {sid:"599569",name:"AADHYA NIRAPURE",adm:"11861",cls:"KG I",sec:"B",stream:"",gender:"female",mobile:"7470383303",wp:"9074538173",alt:"",email:"",dob:"10 Aug, 2019",rte:"No",special:"",mother:"CHHAYA NIRAPURE",father:"DILIP KUMAR NIRAPURE",address:"H.NO.66 SECTOR 1 SHANTI NIKETAN CHARWAL GOVINDPURA BHOPAL"},
+  {sid:"599965",name:"AADHYA SONI",adm:"10981",cls:"II",sec:"A",stream:"",gender:"female",mobile:"9131423610",wp:"9340978986",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"NEHA SONI",father:"BRIJESH SONI",address:"1373, KRISHNA NAGAR COLONY, COACH FACTORY, BHOPAL"},
+  {sid:"644867",name:"AADI AHIRWAR",adm:"12103",cls:"III",sec:"B",stream:"",gender:"male",mobile:"9753961003",wp:"",alt:"9770446215",email:"",dob:"03 Jun, 2017",rte:"No",special:"0",mother:"ARTI AHIRWAR",father:"SHIVRAJ AHIRWAR",address:"D64 DILKHUSHA BHAG APSARA BHOPAL"},
+  {sid:"603911",name:"AADI SAHU",adm:"9754",cls:"XII",sec:"B",stream:"COMMERCE WITH HINDI",gender:"male",mobile:"9826369298",wp:"",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"GAYATRI SAHU",father:"PRADEEP SAHU",address:"OAK 104, RAJAT GOLDEN NEST, KATARA HILLS, BHOPAL"},
+  {sid:"603286",name:"AADITYA BHUMARKAR",adm:"10459",cls:"V",sec:"C",stream:"",gender:"male",mobile:"9755620084",wp:"9111608240",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"PRIYANKA BHUMARKAR",father:"AJEET BHUMARKAR",address:"HIG-30 PURVANCHAL PHASE 1 BDA ROAD KHAJURI KALAN PIPLANI"},
+  {sid:"603325",name:"AAHANA BISWAS",adm:"9770",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"9425028001",wp:"8989160380",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"NAMITA BISWAS",father:"DEBASISH BISWAS",address:"H.NO. 32, GEET MOHINI BUNGALOWS, PHASE - VI, AYODHYA NAGAR, BYPASS ROAD, BHOPAL"},
+  {sid:"583724",name:"AAKRITI MALVIYA",adm:"9238",cls:"XI",sec:"B",stream:"COMMERCE WITH PHYSICAL EDUCATION",gender:"female",mobile:"9131359081",wp:"9131359081",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"Lt. BHAVANA MALVIYA",father:"DHIRENDRA MALVIYA",address:"HOUSE NO. 420 RACHANA NAGAR, BHOPAL"},
+  {sid:"603590",name:"AAKRITI MEHRA",adm:"9959",cls:"VIII",sec:"A",stream:"",gender:"female",mobile:"9303702143",wp:"9713961600",alt:"",email:"piyushsahu7566gmail.com",dob:"04 Jan, 2012",rte:"No",special:"0",mother:"PIYUSH MEHRA",father:"AJAY MEHRA",address:"H.NO 324, ROOP NAGAR GOVINDPURA, BHOPAL"},
+  {sid:"706783",name:"AANAND KUMAR MISHRA",adm:"12174",cls:"XI",sec:"B",stream:"COMMERCE WITH COMPUTER SCIENCE",gender:"male",mobile:"7067546020",wp:"",alt:"9201120480",email:"",dob:"16 Sep, 2009",rte:"No",special:"0",mother:"RANJANA MISHRA",father:"DILIP KUMAR MISHRA",address:"H.NO.-54 NAVIN SWAMI VIVEKANAND NAGAR PIPLANI BHOPAL"},
+  {sid:"603500",name:"AANCHAL BATHAM",adm:"11337",cls:"IX",sec:"A",stream:"CLASS IX WITH HINDI",gender:"female",mobile:"7869248143",wp:"6265494945",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"RITU BATHAM",father:"KRISHNA KUMAR BATHAM",address:"H. NO. C-39, SAMRAT COLONY, ASHOKA GARDEN, NEAR DUSSEHRA MAIDAN, BHOPAL"},
+  {sid:"603908",name:"YASHI MANZHI",adm:"9539",cls:"XII",sec:"A",stream:"PCM WITH PSYCHOLOGY",gender:"female",mobile:"8959750702",wp:"7566799302",alt:"",email:"",dob:"",rte:"No",special:"",mother:"HARCHAT",father:"SANJAY MANZHI",address:"SEC-C-12/2 SUBHASH COLONY ASHOKA GARDEN BPL"},
+  {sid:"603828",name:"YATHARTH GUPTA",adm:"11607",cls:"X",sec:"B",stream:"CLASS X WITH SANSKRIT",gender:"male",mobile:"7000562029",wp:"",alt:"9893208349",email:"",dob:"",rte:"No",special:"0",mother:"RITA GUPTA",father:"VINEET GUPTA",address:"357-A PHASE GOPAL NAGAR, BHEL BHOPAL"},
+  {sid:"603834",name:"YASHASVI PATIL",adm:"11030",cls:"X",sec:"A",stream:"CLASS X WITH HINDI",gender:"female",mobile:"8770879831",wp:"6261005588",alt:"",email:"",dob:"",rte:"No",special:"0",mother:"VINITA PATIL",father:"CHANDRAKANT PATIL",address:"L-214, BHARTI NIKETAN, BHOPAL"}
+];
+
+function calcAge(dobStr){
+  if(!dobStr)return "—";
+  const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  const p=dobStr.trim().split(" ");
+  if(p.length<3)return "—";
+  const d=new Date(parseInt(p[2]),months[p[1]],parseInt(p[0]));
+  if(isNaN(d))return "—";
+  const now=new Date();
+  let age=now.getFullYear()-d.getFullYear();
+  const m=now.getMonth()-d.getMonth();
+  if(m<0||(m===0&&now.getDate()<d.getDate()))age--;
+  return age+" yrs";
+}
+
+let allRecords=JSON.parse(localStorage.getItem("counsellingRecords")||"[]");
+let allGroupRecords=JSON.parse(localStorage.getItem("groupRecords")||"[]");
+let allIEPs=JSON.parse(localStorage.getItem("iepRecords")||"{}");
+let selectedStudent=null;
+const MONTHS=["April","May","June","July","August","September","October","November","December","January","February","March"];
+
+function searchStudents(q){
+  const dd=document.getElementById("searchDropdown");
+  if(!q||q.length<2){dd.style.display="none";return;}
+  const t=q.toLowerCase();
+  const m=STUDENTS.filter(s=>s.name.toLowerCase().includes(t)||s.adm.includes(t)||s.mobile.includes(t)).slice(0,8);
+  dd.innerHTML=m.length?m.map(s=>`<div class="result-item" onclick="selectStudent('${s.sid}')"><div class="result-avatar">${s.name[0]}</div><div class="result-info"><div class="rname">${s.name}</div><div class="rdetail">Adm: ${s.adm} | Class: ${s.cls} ${s.sec} | ${s.mobile}</div></div></div>`).join(""):'<div class="no-result">No students found</div>';
+  dd.style.display="block";
+}
+
+function selectStudent(sid){
+  const s=STUDENTS.find(x=>x.sid===sid);
+  if(!s)return;
+  selectedStudent=s;
+  const card=document.getElementById("studentCard");
+  card.classList.add("visible");
+  const age=calcAge(s.dob);
+  document.getElementById("scAvatar").textContent=s.name[0];
+  document.getElementById("scName").textContent=s.name;
+  document.getElementById("scAdm").textContent=s.adm;
+  document.getElementById("scClass").textContent=s.cls;
+  document.getElementById("scSec").textContent=s.sec;
+  document.getElementById("scAge").textContent=age;
+  document.getElementById("scMob").textContent=s.mobile;
+  document.getElementById("scFather").textContent=s.father;
+  document.getElementById("scGender").textContent=s.gender?s.gender.toUpperCase():"N/A";
+  document.getElementById("ca_name").value=s.name;
+  document.getElementById("ca_age").value=age;
+  document.getElementById("ca_mobile").value=s.mobile;
+  document.getElementById("ca_whatsapp").value=s.wp;
+  document.getElementById("ca_alt").value=s.alt;
+  document.getElementById("ca_email").value=s.email;
+  document.getElementById("ca_class").value=s.cls+(s.sec?" - "+s.sec:"");
+  document.getElementById("ca_section").value=s.sec;
+  document.getElementById("ca_stream").value=s.stream;
+  document.getElementById("ca_gender").value=s.gender;
+  document.getElementById("ca_dob").value=s.dob;
+  document.getElementById("ca_mother").value=s.mother;
+  document.getElementById("ca_father").value=s.father;
+  document.getElementById("ca_address").value=s.address;
+  document.getElementById("ca_rte").value=s.rte;
+  document.getElementById("studentSearch").value=s.name;
+  document.getElementById("searchDropdown").style.display="none";
+  const today=new Date().toISOString().split("T")[0];
+  document.getElementById("at_date").value=today;
+  document.getElementById("at_sig_date").value=today;
+  showToast("Student data loaded automatically.");
+}
+
+function clearSearch(){
+  document.getElementById("studentSearch").value="";
+  document.getElementById("searchDropdown").style.display="none";
+  document.getElementById("studentCard").classList.remove("visible");
+  selectedStudent=null;
+  resetForm();
+}
+document.addEventListener("click",e=>{
+  const w=document.getElementById("searchWrap");
+  if(w&&!w.contains(e.target))document.getElementById("searchDropdown").style.display="none";
+});
+
+function toggleSpecialPanel(v){
+  const p=document.getElementById("specialPanel");
+  p.classList.toggle("show",v==="Yes");
+}
+
+function showFileName(inputId,labelId){
+  const f=document.getElementById(inputId).files[0];
+  if(f)document.getElementById(labelId).textContent=f.name;
+}
+
+function buildMonthTabs(){
+  const c=document.getElementById("monthTabs");
+  c.innerHTML=MONTHS.map((m,i)=>`<div class="month-tab${i===0?" active":""}" onclick="selectMonth(this,'${m}')">${m}</div>`).join("");
+}
+function selectMonth(el,m){
+  document.querySelectorAll(".month-tab").forEach(t=>t.classList.remove("active"));
+  el.classList.add("active");
+}
+function openIEP(){
+  if(!selectedStudent){showToast("Please select a student first.",true);return;}
+  buildMonthTabs();
+  document.getElementById("iep_name").value=selectedStudent.name;
+  document.getElementById("iep_dob").value=selectedStudent.dob;
+  document.getElementById("iep_age").value=calcAge(selectedStudent.dob);
+  document.getElementById("iep_grade").value=selectedStudent.cls+" "+selectedStudent.sec;
+  document.getElementById("iep_sid").value=selectedStudent.sid;
+  document.getElementById("iep_disability").value=document.getElementById("sp_disability").value;
+  const saved=allIEPs[selectedStudent.sid]||{};
+  Object.keys(saved).forEach(k=>{const el=document.getElementById(k);if(el)el.value=saved[k];});
+  document.getElementById("iepModal").classList.add("open");
+}
+function closeIEP(){document.getElementById("iepModal").classList.remove("open");}
+function saveIEP(){
+  if(!selectedStudent)return;
+  const fields=["iep_lang","iep_meeting_date","iep_effective","iep_strengths","iep_parent_concerns","iep_functional","iep_impact","iep_goal1","iep_baseline1","iep_criteria1","iep_goal2","iep_baseline2","iep_eval2","iep_counsel_services","iep_accommodations","iep_assistive","iep_lre","iep_skills","iep_support","iep_sports","iep_sports_mod","iep_parent_sign","iep_parent_date","iep_counsellor_sign","iep_counsellor_date","iep_school_sign","iep_school_date"];
+  const data={};
+  fields.forEach(k=>{const el=document.getElementById(k);if(el)data[k]=el.value;});
+  allIEPs[selectedStudent.sid]=data;
+  localStorage.setItem("iepRecords",JSON.stringify(allIEPs));
+  showToast("IEP saved successfully.");
+  closeIEP();
+}
+
+function saveRecord(){
+  if(!selectedStudent){showToast("Please search and select a student first.",true);return;}
+  const disability=document.getElementById("sp_disability").value;
+  const iq=document.getElementById("sp_iq").value;
+  const special=document.getElementById("ca_special").value;
+  const rec={
+    id:Date.now(),sid:selectedStudent.sid,studentName:selectedStudent.name,adm:selectedStudent.adm,
+    cls:selectedStudent.cls+" "+selectedStudent.sec,counsellor:document.getElementById("at_counsellor").value||"—",
+    date:document.getElementById("at_date").value,sessionNo:document.getElementById("at_session_no").value||"1",
+    status:document.getElementById("at_status").value||"Open",
+    isSpecial:special==="Yes",disability,iq,
+  };
+  allRecords.unshift(rec);
+  localStorage.setItem("counsellingRecords",JSON.stringify(allRecords));
+  renderRecords(allRecords);
+  renderPWD();
+  showToast("Counselling record saved successfully.");
+}
+
+function renderRecords(data){
+  const body=document.getElementById("recordsBody");
+  if(!data.length){body.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px;">No records yet.</td></tr>';return;}
+  const sc={Open:"badge-open","In Progress":"badge-progress",Closed:"badge-closed",Referred:"badge-referred"};
+  body.innerHTML=data.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.adm}</td><td>${r.cls}</td><td>${r.counsellor}</td><td>${r.date||"—"}</td><td>Session ${r.sessionNo}</td><td><span class="badge ${sc[r.status]||"badge-open"}">${r.status}</span></td><td><button class="btn btn-secondary btn-sm">View</button> <button class="btn btn-sm" style="background:var(--danger-bg);color:var(--danger);border:none;" onclick="deleteRecord(${r.id})">Delete</button></td></tr>`).join("");
+}
+function filterRecords(q){const t=q.toLowerCase();renderRecords(allRecords.filter(r=>r.studentName.toLowerCase().includes(t)||r.adm.includes(t)||(r.counsellor||"").toLowerCase().includes(t)));}
+function deleteRecord(id){if(!confirm("Delete this record?"))return;allRecords=allRecords.filter(r=>r.id!==id);localStorage.setItem("counsellingRecords",JSON.stringify(allRecords));renderRecords(allRecords);renderPWD();showToast("Record deleted.");}
+renderRecords(allRecords);
+
+function renderPWD(){
+  const pwd=allRecords.filter(r=>r.isSpecial);
+  const body=document.getElementById("pwdBody");
+  if(!pwd.length){body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px;">No PWD students saved yet.</td></tr>';return;}
+  const seen=new Set();
+  const unique=pwd.filter(r=>{if(seen.has(r.sid))return false;seen.add(r.sid);return true;});
+  body.innerHTML=unique.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.adm}</td><td>${r.cls}</td><td><span class="pwd-tag">${r.disability||"—"}</span></td><td>${r.iq||"—"}</td><td><span class="badge badge-progress">Active</span></td><td><button class="btn btn-primary btn-sm" onclick="openIEPFromPWD('${r.sid}')">Open IEP</button></td></tr>`).join("");
+}
+function filterPWD(q){
+  const t=q.toLowerCase();
+  const pwd=allRecords.filter(r=>r.isSpecial&&(r.studentName.toLowerCase().includes(t)||r.adm.includes(t)||(r.disability||"").toLowerCase().includes(t)));
+  const body=document.getElementById("pwdBody");
+  if(!pwd.length){body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px;">No matching PWD students.</td></tr>';return;}
+  const seen=new Set();
+  const unique=pwd.filter(r=>{if(seen.has(r.sid))return false;seen.add(r.sid);return true;});
+  body.innerHTML=unique.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.adm}</td><td>${r.cls}</td><td><span class="pwd-tag">${r.disability||"—"}</span></td><td>${r.iq||"—"}</td><td><span class="badge badge-progress">Active</span></td><td><button class="btn btn-primary btn-sm" onclick="openIEPFromPWD('${r.sid}')">Open IEP</button></td></tr>`).join("");
+}
+function openIEPFromPWD(sid){
+  const r=allRecords.find(x=>x.sid===sid);
+  if(!r)return;
+  const s=STUDENTS.find(x=>x.sid===sid)||{sid,name:r.studentName,dob:"",cls:r.cls,sec:"",adm:r.adm};
+  selectedStudent=s;
+  buildMonthTabs();
+  document.getElementById("iep_name").value=r.studentName;
+  document.getElementById("iep_dob").value=s.dob||"";
+  document.getElementById("iep_age").value=calcAge(s.dob);
+  document.getElementById("iep_grade").value=r.cls;
+  document.getElementById("iep_sid").value=sid;
+  document.getElementById("iep_disability").value=r.disability||"";
+  const saved=allIEPs[sid]||{};
+  Object.keys(saved).forEach(k=>{const el=document.getElementById(k);if(el)el.value=saved[k];});
+  document.getElementById("iepModal").classList.add("open");
+}
+renderPWD();
+
+function saveGroupSession(){
+  const gs={
+    id:Date.now(),
+    parent:{date:document.getElementById("gs_parent_date").value,counsellor:document.getElementById("gs_parent_counsellor").value,topic:document.getElementById("gs_parent_topic").value,notes:document.getElementById("gs_parent_notes").value},
+    teacher:{date:document.getElementById("gs_teacher_date").value,counsellor:document.getElementById("gs_teacher_counsellor").value,topic:document.getElementById("gs_teacher_topic").value,notes:document.getElementById("gs_teacher_notes").value},
+    student:{date:document.getElementById("gs_student_date").value,counsellor:document.getElementById("gs_student_counsellor").value,topic:document.getElementById("gs_student_topic").value,cls:document.getElementById("gs_student_class").value,notes:document.getElementById("gs_student_notes").value},
+  };
+  allGroupRecords.unshift(gs);
+  localStorage.setItem("groupRecords",JSON.stringify(allGroupRecords));
+  renderGroupRecords();
+  showToast("Group session saved successfully.");
+}
+function renderGroupRecords(){
+  const body=document.getElementById("groupRecordsBody");
+  const rows=[];
+  allGroupRecords.forEach((g)=>{
+    if(g.parent&&g.parent.topic)rows.push(`<tr><td>${rows.length+1}</td><td><span class="badge badge-open">Parent</span></td><td>${g.parent.date||"—"}</td><td>${g.parent.topic||"—"}</td><td>${g.parent.counsellor||"—"}</td><td>—</td><td><button class="btn btn-sm" style="background:var(--danger-bg);color:var(--danger);border:none;" onclick="deleteGroup(${g.id})">Delete</button></td></tr>`);
+    if(g.teacher&&g.teacher.topic)rows.push(`<tr><td>${rows.length+1}</td><td><span class="badge badge-progress">Teacher</span></td><td>${g.teacher.date||"—"}</td><td>${g.teacher.topic||"—"}</td><td>${g.teacher.counsellor||"—"}</td><td>—</td><td></td></tr>`);
+    if(g.student&&g.student.topic)rows.push(`<tr><td>${rows.length+1}</td><td><span class="badge badge-closed">Student</span></td><td>${g.student.date||"—"}</td><td>${g.student.topic||"—"}</td><td>${g.student.counsellor||"—"}</td><td>${g.student.cls||"—"}</td><td></td></tr>`);
+  });
+  body.innerHTML=rows.length?rows.join(""):'<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No group sessions yet.</td></tr>';
+}
+function deleteGroup(id){allGroupRecords=allGroupRecords.filter(g=>g.id!==id);localStorage.setItem("groupRecords",JSON.stringify(allGroupRecords));renderGroupRecords();showToast("Group record deleted.");}
+function resetGroupForm(){["gs_parent_date","gs_parent_counsellor","gs_parent_topic","gs_parent_notes","gs_teacher_date","gs_teacher_counsellor","gs_teacher_topic","gs_teacher_notes","gs_student_date","gs_student_counsellor","gs_student_topic","gs_student_class","gs_student_notes"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});}
+renderGroupRecords();
+
+function switchTab(name,el){
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  if(el)el.classList.add("active");
+}
+
+function resetForm(){
+  ["ca_reason","ca_clinical","ca_family_hist","ca_complaints","ca_mse","ca_psych_test","ca_behaviour","ca_subject","ca_message","at_counsellor","at_session_no","at_duration","at_child","at_parent","at_teacher","at_recommend","at_signature","ca_prev_school","ca_prev_class","ca_mother_mob","ca_father_mob","ca_whatsapp","ca_alt","ca_email"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+  ["ca_rte","ca_special","ca_medium","at_status","sp_disability","sp_iq","sp_accommodation"].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  document.getElementById("specialPanel").classList.remove("show");
+}
+function printForm(){window.print();}
+
+function showToast(msg,warn=false){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.style.background=warn?"#c62828":"#2e7d32";
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3000);
+}
+</script>
 </body>
 </html>
