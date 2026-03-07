@@ -170,9 +170,34 @@
 
   @media print{.no-print{display:none!important;}body{background:#fff;}}
   @media(max-width:600px){.form-grid{grid-template-columns:1fr;}.topbar-search{display:none;}.main-content{padding:12px;}}
+
+  /* Follow-up Notification Banner */
+  #followup-banner {
+    display:none;
+    background:linear-gradient(90deg,#e65100,#f57f17);
+    color:#fff;
+    padding:10px 20px;
+    font-size:13px;
+    font-weight:600;
+    position:sticky;
+    top:0;
+    z-index:200;
+    box-shadow:0 2px 8px rgba(230,81,0,.25);
+  }
+  #followup-banner.show { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #followup-banner .fn-title { font-size:14px; font-weight:700; margin-right:4px; }
+  #followup-banner .fn-items { flex:1; }
+  #followup-banner .fn-close { margin-left:auto; background:rgba(255,255,255,.25); border:none; color:#fff; border-radius:4px; padding:3px 10px; font-size:12px; cursor:pointer; font-family:inherit; font-weight:600; }
+  #followup-banner .fn-item { display:inline-block; background:rgba(255,255,255,.2); border-radius:4px; padding:2px 10px; margin:2px 4px; font-size:12.5px; }
 </style>
 </head>
 <body>
+<div id="followup-banner">
+  <span class="fn-title">&#128276; Follow-up Due Today / Pending:</span>
+  <span class="fn-items" id="followup-items"></span>
+  <button class="fn-close" onclick="document.getElementById('followup-banner').classList.remove('show')">Dismiss</button>
+</div>
+
 
 <div class="topbar no-print">
   <div style="display:flex;align-items:center;gap:10px;">
@@ -332,22 +357,20 @@
               <option>Not Assessed</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Accommodation Provided</label>
-            <select id="sp_accommodation">
-              <option value="">— Select —</option>
-              <option>Extra Time (25%)</option>
-              <option>Extra Time (50%)</option>
-              <option>Scribe / Writer</option>
-              <option>Large Print Question Paper</option>
-              <option>Separate Room</option>
-              <option>Assistive Technology</option>
-              <option>Sensory Break Allowance</option>
-              <option>Modified Curriculum</option>
-              <option>Preferential Seating</option>
-              <option>Multiple</option>
-              <option>None Required</option>
-            </select>
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Accommodation Provided <span style="font-size:11px;color:var(--muted);font-weight:400">(Select all that apply)</span></label>
+            <div id="sp_accommodation" style="display:flex;flex-wrap:wrap;gap:8px 18px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--input-bg);">
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Extra Time (25%)" style="width:auto;margin:0"> Extra Time (25%)</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Extra Time (50%)" style="width:auto;margin:0"> Extra Time (50%)</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Scribe / Writer" style="width:auto;margin:0"> Scribe / Writer</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Large Print Question Paper" style="width:auto;margin:0"> Large Print Question Paper</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Separate Room" style="width:auto;margin:0"> Separate Room</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Assistive Technology" style="width:auto;margin:0"> Assistive Technology</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Sensory Break Allowance" style="width:auto;margin:0"> Sensory Break Allowance</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Modified Curriculum" style="width:auto;margin:0"> Modified Curriculum</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="Preferential Seating" style="width:auto;margin:0"> Preferential Seating</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--text);cursor:pointer"><input type="checkbox" value="None Required" style="width:auto;margin:0"> None Required</label>
+            </div>
           </div>
         </div>
         <div class="form-group" style="margin-bottom:12px;">
@@ -2431,6 +2454,7 @@ function saveRecord(){
     cls:selectedStudent.cls+" "+selectedStudent.sec,counsellor:document.getElementById("at_counsellor").value||"—",
     date:document.getElementById("at_date").value,sessionNo:document.getElementById("at_session_no").value||"1",
     status:document.getElementById("at_status").value||"Open",
+    followup:document.getElementById("at_followup").value||"",
     isSpecial:special==="Yes",disability,iq,
   };
   allRecords.unshift(rec);
@@ -2520,7 +2544,8 @@ function switchTab(name,el){
 
 function resetForm(){
   ["ca_reason","ca_clinical","ca_family_hist","ca_complaints","ca_mse","ca_psych_test","ca_behaviour","ca_subject","ca_message","at_counsellor","at_session_no","at_duration","at_child","at_parent","at_teacher","at_recommend","at_signature","ca_prev_school","ca_prev_class","ca_mother_mob","ca_father_mob","ca_whatsapp","ca_alt","ca_email"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
-  ["ca_rte","ca_special","ca_medium","at_status","sp_disability","sp_iq","sp_accommodation"].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  ["ca_rte","ca_special","ca_medium","at_status","sp_disability","sp_iq","sp_iq"].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  document.querySelectorAll('#sp_accommodation input[type="checkbox"]').forEach(cb=>cb.checked=false);
   document.getElementById("specialPanel").classList.remove("show");
 }
 function printForm(){window.print();}
@@ -2532,6 +2557,21 @@ function showToast(msg,warn=false){
   t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),3000);
 }
+
+// Follow-up notification banner
+function checkFollowupNotifications(){
+  const today = new Date().toISOString().split('T')[0];
+  const records = JSON.parse(localStorage.getItem('counsellingRecords')||'[]');
+  const due = records.filter(r => r.followup && (r.followup <= today) && r.status !== 'Closed');
+  if(due.length){
+    const container = document.getElementById('followup-items');
+    container.innerHTML = due.map(r =>
+      `<span class="fn-item">&#128100; ${r.studentName} (Adm: ${r.adm}) &mdash; Follow-up: ${r.followup} &mdash; Status: ${r.status||'Open'}</span>`
+    ).join('');
+    document.getElementById('followup-banner').classList.add('show');
+  }
+}
+window.addEventListener('DOMContentLoaded', checkFollowupNotifications);
 </script>
 </body>
 </html>
